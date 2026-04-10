@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,70 +16,152 @@
             --error: #ff4d4d;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        
-        body { 
-            background-color: var(--dark); 
-            color: var(--text); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        .auth-container { width: 100%; max-width: 450px; padding: 20px; text-align: center; z-index: 10; position: relative; }
-        
-        .stepper { display: flex; justify-content: space-between; margin-bottom: 40px; position: relative; }
-        .step { width: 30%; font-size: 0.7rem; text-transform: uppercase; color: #555; font-weight: bold; transition: 0.3s; position: relative; }
-        .step::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 4px; background: #222; border-radius: 2px; }
-        .step.active { color: var(--primary); }
-        .step.active::after { background: var(--primary); box-shadow: var(--primary-glow); }
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        }
 
-        .auth-card { 
-            background: var(--gray); 
-            padding: 40px 0; 
-            border-radius: 15px; 
-            border: 1px solid var(--light-gray); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
             position: relative;
-            overflow: hidden; /* This keeps the other steps hidden */
+        }
+
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .step {
+            width: 30%;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #555;
+            font-weight: bold;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #222;
+            border-radius: 2px;
+        }
+
+        .step.active {
+            color: var(--primary);
+        }
+
+        .step.active::after {
+            background: var(--primary);
+            box-shadow: var(--primary-glow);
+        }
+
+        .auth-card {
+            background: var(--gray);
+            padding: 40px 0;
+            border-radius: 15px;
+            border: 1px solid var(--light-gray);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
             min-height: 540px;
         }
 
         .steps-wrapper {
             display: flex;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 300%; 
+            width: 300%;
         }
 
-        .auth-step { 
+        .auth-step {
             width: 33.333%;
             flex-shrink: 0;
-            padding: 0 40px; 
-            /* Added to prevent internal alignment issues during slide */
+            padding: 0 40px;
             display: flex;
             flex-direction: column;
         }
 
-        .logo { font-size: 1.8rem; font-weight: 900; margin-bottom: 30px; letter-spacing: -1px; }
-        .logo span { color: var(--primary); }
-
-        .form-group { text-align: left; margin-bottom: 20px; position: relative; }
-        label { font-size: 0.8rem; color: #aaa; display: block; margin-bottom: 8px; }
-        
-        .input-wrapper { position: relative; width: 100%; }
-        
-        input { 
-            width: 100%; padding: 12px 15px; background: #050505; border: 1px solid var(--light-gray); 
-            border-radius: 8px; color: white; outline: none; transition: 0.3s; 
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
         }
-        input:focus { border-color: var(--primary); box-shadow: var(--primary-glow); }
-        
-        .error-input { border-color: var(--error) !important; box-shadow: 0 0 10px rgba(255, 77, 77, 0.2); }
-        .error-msg { color: var(--error); font-size: 0.7rem; margin-top: 5px; display: none; }
-        
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            font-size: 0.8rem;
+            color: #aaa;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #050505;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: var(--primary-glow);
+        }
+
+        .error-input {
+            border-color: var(--error) !important;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
+        }
+
+        .error-msg {
+            color: var(--error);
+            font-size: 0.7rem;
+            margin-top: 5px;
+            display: none;
+        }
+
         .validation-icon {
             position: absolute;
             right: 12px;
@@ -90,7 +173,7 @@
             display: none;
         }
 
-        .validation-icon:hover + .validation-tooltip {
+        .validation-icon:hover+.validation-tooltip {
             display: block;
         }
 
@@ -108,7 +191,7 @@
             z-index: 100;
         }
 
-                .real-captcha-container {
+        .real-captcha-container {
             background: #050505;
             border: 1px solid #333;
             border-radius: 12px;
@@ -116,13 +199,14 @@
             margin: 20px 0;
             text-align: center;
         }
-        .captcha-instruction { font-size: 0.85rem; margin-bottom: 15px; color: var(--primary); font-weight: bold; }
-        .captcha-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+
+        .captcha-instruction {
+            font-size: 0.85rem;
             margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: bold;
         }
+
         .captcha-tile {
             aspect-ratio: 1;
             background: #111;
@@ -135,46 +219,153 @@
             font-size: 1.5rem;
             transition: 0.2s;
         }
-        .captcha-tile:hover { background: #1a1a1a; border-color: #444; }
-        .captcha-tile.selected { border-color: var(--primary); background: rgba(0, 255, 135, 0.1); }
 
-        .btn { 
-            width: 100%; padding: 14px; background: var(--primary); border: none; border-radius: 8px; 
-            font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; margin-top: 10px;
-        }
-        .btn:hover:not(:disabled) { background: #00cc6a; transform: translateY(-2px); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-outline { background: transparent; border: 1px solid #444; color: #888; margin-top: 15px; }
-
-        .divider { display: flex; align-items: center; margin: 25px 0; color: #555; font-size: 0.8rem; }
-        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #333; margin: 0 10px; }
-        
-        .social-btn { 
-            width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #252525; 
-            border: 1px solid #333; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; 
-            cursor: pointer; font-size: 0.9rem;
+        .captcha-tile:hover {
+            background: #1a1a1a;
+            border-color: #444;
         }
 
-        .plan-container { display: flex; flex-direction: column; gap: 15px; }
-        .plan-card { 
-            background: #050505; padding: 20px; border-radius: 12px; border: 1px solid #333; 
-            text-align: left; position: relative; cursor: pointer; transition: 0.3s;
+        .captcha-tile.selected {
+            border-color: var(--primary);
+            background: rgba(0, 255, 135, 0.1);
         }
-        .plan-card.selected { border: 2px solid var(--primary); box-shadow: var(--primary-glow); }
-        .badge { position: absolute; top: 10px; right: 10px; background: var(--primary); color: black; font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
-        
-        .feature-list { font-size: 0.75rem; color: #aaa; list-style: none; margin-top: 10px; }
-        .feature-list li { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-        .feature-list li span { color: var(--primary); font-weight: bold; }
 
-        .trust-tags { margin-top: 20px; font-size: 0.7rem; color: #555; padding: 0 40px; }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #00cc6a;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            margin-top: 15px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #333;
+            margin: 0 10px;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: #252525;
+            border: 1px solid #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .plan-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .plan-card {
+            background: #050505;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            text-align: left;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .plan-card.selected {
+            border: 2px solid var(--primary);
+            box-shadow: var(--primary-glow);
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: black;
+            font-size: 0.6rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .feature-list {
+            font-size: 0.75rem;
+            color: #aaa;
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .feature-list li span {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .trust-tags {
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: #555;
+            padding: 0 40px;
+        }
 
         @media (max-width: 480px) {
-            .auth-card { padding: 25px 0; }
-            .auth-step { padding: 0 25px; }
+            .auth-card {
+                padding: 25px 0;
+            }
+
+            .auth-step {
+                padding: 0 25px;
+            }
         }
     </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
+
 <body>
 
     <div class="auth-container">
@@ -188,14 +379,14 @@
 
         <div class="auth-card">
             <div class="steps-wrapper" id="stepsWrapper">
-                <!-- Step 1: Login -->
                 <div class="auth-step" id="step1">
                     <div class="form-group">
                         <label>Email Address</label>
                         <div class="input-wrapper">
-                            <input type="email" id="authEmailInput" placeholder="coach@elitetouch.com">
+                            <input type="email" id="authEmailInput" placeholder="player@elitetouch.com">
+                            <div class="validation-icon" id="emailIcon">(!)</div>
+                            <div class="validation-tooltip">Invalid email address</div>
                         </div>
-                        <div id="emailError" class="error-msg">Please enter a valid email</div>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
@@ -204,30 +395,30 @@
                         </div>
                         <div id="passError" class="error-msg">Password is required</div>
                     </div>
-                    <button class="btn" id="authSubmitBtn" onclick="handleAuth()">Sign In / Register</button>
+                    <button type="button" class="btn" id="authSubmitBtn" onclick="handleAuth()">Sign In / Register</button>
                     <div class="divider">Or continue with</div>
-                    <button class="social-btn" onclick="signInWithGoogle()">Google</button>
+                    <button type="button" class="social-btn" onclick="signInWithGoogle()">Google</button>
                     <button class="social-btn">Apple ID</button>
                 </div>
 
-                <!-- Step 2: Verification -->
                 <div class="auth-step" id="step2">
                     <h3>Security Check</h3>
                     <p style="font-size: 0.8rem; color: #aaa; margin: 5px 0;">Verify your football knowledge.</p>
-                    
+
                     <div class="real-captcha-container">
-                        <div class="captcha-instruction" id="captchaPrompt">Select all "Football" (⚽) icons</div>
-                        <div class="captcha-grid" id="captchaGrid">
-                            <!-- Tiles generated by JS -->
+
+                        <div style="display:flex; justify-content:center;">
+                            <div class="g-recaptcha" data-sitekey="6LffKLEsAAAAAPtySyW_Xn7lyUfoHBvwPSSTaYMF">
+                            </div>
                         </div>
-                        <button class="btn" style="padding: 8px; font-size: 0.7rem;" onclick="generateCaptcha()">Refresh Puzzle</button>
+
                     </div>
 
-                    <button class="btn" id="verifyBtn" onclick="validateCaptcha()">Verify & Continue</button>
+                    <button type="button" class="btn" onclick="verifyCaptcha()">Verify & Continue</button>
+
                     <button class="btn btn-outline" onclick="nextStep(1)">Back</button>
                 </div>
 
-                <!-- Step 3: Plan Selection -->
                 <div class="auth-step" id="step3">
                     <h3>Choose Your Plan</h3>
                     <br>
@@ -254,7 +445,7 @@
 
                     <div id="payment-section" style="display: none; margin-top: 20px; text-align: left;">
                         <h4 style="margin-bottom: 10px; color: var(--primary);">Enter Payment Details</h4>
-                        
+
                         <div class="form-group">
                             <div class="input-wrapper">
                                 <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
@@ -293,8 +484,16 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            GoogleAuthProvider,
+            signInWithPopup
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAkTy7pDZlry1Qs4UAvA_Fyx5S5OgPaBp0",
@@ -311,33 +510,99 @@
         let targetIcon = "⚽";
         let activePlan = 'premium';
 
+        function setButtonLoading(buttonId, loadingText, originalText, isLoading) {
+            const btn = document.getElementById(buttonId);
+            btn.disabled = isLoading;
+            btn.innerText = isLoading ? loadingText : originalText;
+        }
+
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
             const email = params.get('email');
-            if (email) document.getElementById('authEmailInput').value = email;
-            generateCaptcha();
+            if(email) document.getElementById('authEmailInput').value = email;
             selectPlan('premium');
+            document.getElementById('authEmailInput').addEventListener('input', validateEmail);
         };
 
-        // --- AUTH LOGIC ---
+        window.verifyCaptcha = () => {
+
+            if(typeof grecaptcha === "undefined") {
+                alert("Captcha failed to load. Refresh the page.");
+                return;
+            }
+
+            const captchaResponse = grecaptcha.getResponse();
+
+            if(!captchaResponse) {
+                alert("Please complete the captcha.");
+                return;
+            }
+
+            nextStep(3);
+        };
+        const emailRegex = /^(?!\.)[A-Za-z0-9._%+-]+@(?!-)[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/;
+
         window.handleAuth = async () => {
-            const email = document.getElementById('authEmailInput').value;
-            const pass = document.getElementById('authPasswordInput').value;
-            if (!email.includes('@') || pass.length < 6) {
-                document.getElementById('emailError').style.display = email.includes('@') ? 'none' : 'block';
-                document.getElementById('passError').style.display = pass.length >= 6 ? 'none' : 'block';
+            const emailEl = document.getElementById('authEmailInput');
+            const passEl = document.getElementById('authPasswordInput');
+
+            const email = emailEl.value.trim();
+            const pass = passEl.value;
+            const emailValid = validateEmail();
+
+            if(!emailValid || pass.length < 6) {
+                const passEl = document.getElementById('authPasswordInput');
+
+                if(pass.length < 6) {
+                    passEl.classList.add('error-input');
+                } else {
+                    passEl.classList.remove('error-input');
+                }
+
                 return;
             }
             try {
-                try { await signInWithEmailAndPassword(auth, email, pass); } 
-                catch (e) { await createUserWithEmailAndPassword(auth, email, pass); }
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } catch (e) {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                }
                 nextStep(2);
-            } catch (err) { alert(err.message); }
+            } catch (err) {
+                alert(err.message);
+            }
+        };
+
+        function validateEmail() {
+            const emailInput = document.getElementById('authEmailInput');
+            const icon = document.getElementById('emailIcon');
+
+            if(emailInput.value === "") {
+                emailInput.classList.remove('error-input');
+                icon.style.display = 'none';
+                return false;
+            }
+
+            const valid = emailRegex.test(emailInput.value.trim());
+
+            if(valid) {
+                emailInput.classList.remove('error-input');
+                icon.style.display = 'none';
+            } else {
+                emailInput.classList.add('error-input');
+                icon.style.display = 'block';
+            }
+
+            return valid;
         };
 
         window.signInWithGoogle = async () => {
-            try { await signInWithPopup(auth, new GoogleAuthProvider()); nextStep(2); } 
-            catch (err) { nextStep(2); } // Bypass for sandbox
+            try {
+                await signInWithPopup(auth, new GoogleAuthProvider());
+                nextStep(2);
+            } catch (err) {
+                nextStep(2);
+            }
         };
 
         window.nextStep = (step) => {
@@ -348,59 +613,6 @@
             });
         };
 
-        // --- REAL CAPTCHA SYSTEM ---
-        const icons = ["⚽", "🏀", "🎾", "🏐", "🏈", "🏉", "⚾", "🥎", "🎱"];
-        
-        window.generateCaptcha = () => {
-            const grid = document.getElementById('captchaGrid');
-            const prompt = document.getElementById('captchaPrompt');
-            grid.innerHTML = "";
-            
-            // Randomly pick a target icon for this session
-            targetIcon = icons[Math.floor(Math.random() * icons.length)];
-            const iconNames = {"⚽":"Football","🏀":"Basketball","🎾":"Tennis","🏐":"Volleyball","🏈":"American Football","🏉":"Rugby","⚾":"Baseball","🥎":"Softball","🎱":"Billiards"};
-            prompt.innerText = `Select all ${iconNames[targetIcon]} icons`;
-
-            // Create 9 tiles, ensuring at least 2-4 are the target
-            let tiles = [];
-            for(let i=0; i<9; i++) {
-                const isTarget = Math.random() > 0.6;
-                tiles.push(isTarget ? targetIcon : icons.filter(i => i !== targetIcon)[Math.floor(Math.random() * (icons.length-1))]);
-            }
-            
-            // Ensure at least one target exists
-            if (!tiles.includes(targetIcon)) tiles[0] = targetIcon;
-
-            tiles.forEach(icon => {
-                const div = document.createElement('div');
-                div.className = 'captcha-tile';
-                div.innerText = icon;
-                div.onclick = () => div.classList.toggle('selected');
-                grid.appendChild(div);
-            });
-        };
-
-        window.validateCaptcha = () => {
-            const tiles = document.querySelectorAll('.captcha-tile');
-            let success = true;
-
-            tiles.forEach(tile => {
-                const isSelected = tile.classList.contains('selected');
-                const isCorrect = tile.innerText === targetIcon;
-                if ((isCorrect && !isSelected) || (!isCorrect && isSelected)) {
-                    success = false;
-                }
-            });
-
-            if (success) {
-                nextStep(3);
-            } else {
-                alert("Incorrect verification. Please try again.");
-                generateCaptcha();
-            }
-        };
-
-        // --- PLAN & FINISH ---
         window.selectPlan = (type) => {
             activePlan = type;
             document.getElementById('card-free').classList.toggle('selected', type === 'free');
@@ -413,4 +625,5 @@
         };
     </script>
 </body>
+
 </html>
