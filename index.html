@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" style="color-scheme: dark;">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,56 +27,101 @@
     <meta name="theme-color" content="#00ff87">
 
     <link rel="icon" href="/favicon.ico">
-    
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7H9E0EB6XE"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', 'G-7H9E0EB6XE');
     </script>
 
     <style>
-        /* Base Styles & Brand Identity */
         :root {
-            --primary: #00ff87; 
+            --primary: #00ff87;
             --primary-glow: 0 0 20px rgba(0, 255, 135, 0.4);
             --dark: #0d0d0d;
             --darker: #050505;
             --light: #f4f4f4;
             --gray: #222;
-            --error: #ff4b2b; /* Added error color for custom validation */
+            --error: #ff4b2b;
         }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
-        
-        body { background-color: var(--dark); color: var(--light); line-height: 1.6; overflow-x: hidden; }
-        
-        /* Custom Dark Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--darker); }
-        ::-webkit-scrollbar-thumb { background: var(--gray); border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-        
-        /* Dark mode selection highlight */
-        ::selection { background: var(--primary); color: var(--darker); }
 
-        /* App-Style Navigation Links (Hides URL preview) */
-        a { text-decoration: none; color: var(--light); transition: 0.3s; }
-        [data-link] { cursor: pointer; transition: 0.3s; font-weight: 600; color: var(--light); }
-        [data-link]:hover { color: var(--primary); }
-        
-        /* Background Pattern (Tactical Board vibe) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        ::selection {
+            background: var(--primary);
+            color: var(--darker);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--light);
+            transition: 0.3s;
+        }
+
+        [data-link] {
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        [data-link]:hover {
+            color: var(--primary);
+        }
+
         .pattern-bg {
             background-image: radial-gradient(var(--gray) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* Typography */
-        h1, h2, h3 { text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        .text-accent { color: var(--primary); text-shadow: var(--primary-glow); }
+        h1,
+        h2,
+        h3 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
 
-        /* Navigation Bar (Sticky) */
+        .text-accent {
+            color: var(--primary);
+            text-shadow: var(--primary-glow);
+        }
+
         header {
             position: sticky;
             top: 0;
@@ -85,6 +131,7 @@
             border-bottom: 1px solid var(--gray);
             padding: 15px 0;
         }
+
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -93,11 +140,29 @@
             align-items: center;
             padding: 0 20px;
         }
-        .logo { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
-        .logo span { color: var(--primary); text-shadow: var(--primary-glow); }
-        .nav-links { display: flex; list-style: none; gap: 25px; align-items: center; font-weight: 600; font-size: 0.9rem;}
-        
-        /* Buttons */
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+            text-shadow: var(--primary-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
         .btn {
             display: inline-block;
             background: var(--primary);
@@ -111,16 +176,40 @@
             cursor: pointer;
             box-shadow: var(--primary-glow);
         }
-        .btn:hover { background: #00cc6a; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 255, 135, 0.6); }
-        .btn-small { padding: 8px 20px; font-size: 0.85rem; }
-        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
-        .btn-outline:hover { background: var(--primary); color: var(--darker); }
 
-        /* Sections */
-        section { padding: 100px 20px; text-align: center; }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .btn:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 255, 135, 0.6);
+        }
 
-        /* Hero Section */
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 0.85rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--darker);
+        }
+
+        section {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         .hero {
             height: 90vh;
             display: flex;
@@ -128,11 +217,30 @@
             justify-content: center;
             background: linear-gradient(rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.9)), url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop') center/cover;
         }
-        .hero h1 { font-size: 4.5rem; margin-bottom: 10px; line-height: 1.1; }
-        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 650px; margin-left: auto; margin-right: auto; color: #ccc; }
 
-        /* App Preview Section */
-        .preview-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 50px; }
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #ccc;
+        }
+
+        .preview-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
         .mockup {
             background: var(--darker);
             border: 1px solid var(--gray);
@@ -143,72 +251,228 @@
             text-align: left;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
+
         .mockup::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--primary);
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary);
         }
-        .mockup h4 { font-size: 1.2rem; border-bottom: 1px solid var(--gray); padding-bottom: 10px; color: var(--primary); }
-        .mockup-content { margin-top: 15px; font-size: 0.9rem; color: #aaa; }
-        .progress-bar { width: 100%; background: #333; height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
-        .progress-fill { width: 75%; background: var(--primary); height: 100%; box-shadow: var(--primary-glow); }
-        .drill-item { background: var(--gray); padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; }
 
-        /* Social Proof / Testimonials */
-        .testimonials { background: var(--darker); }
-        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
-        .quote-card { background: var(--gray); padding: 30px; border-radius: 10px; border-left: 4px solid var(--primary); text-align: left; font-style: italic; }
-        .quote-author { display: block; margin-top: 15px; font-weight: bold; font-style: normal; color: var(--primary); font-size: 0.9rem; }
-
-        /* SEO & About Section */
-        .seo-section { text-align: left; background: var(--dark); }
-        .seo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-        @media(max-width: 768px) { .seo-grid { grid-template-columns: 1fr; } }
-        .seo-content p { color: #aaa; margin-bottom: 15px; }
-
-        /* Sign Up Section */
-        .signup { border-top: 1px solid var(--gray); }
-        .signup form { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
-        
-        /* Custom Input & Validation Container */
-        .input-container { position: relative; width: 350px; max-width: 100%; }
-        .signup input { 
-            padding: 15px 20px; border-radius: 30px; border: 1px solid var(--gray); 
-            background: var(--darker); color: #fff; width: 100%; outline: none; transition: 0.3s; 
+        .mockup h4 {
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--gray);
+            padding-bottom: 10px;
+            color: var(--primary);
         }
-        .signup input:focus { border-color: var(--primary); box-shadow: var(--primary-glow); }
+
+        .mockup-content {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background: #333;
+            height: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 75%;
+            background: var(--primary);
+            height: 100%;
+            box-shadow: var(--primary-glow);
+        }
+
+        .drill-item {
+            background: var(--gray);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .testimonials {
+            background: var(--darker);
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .quote-card {
+            background: var(--gray);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+            font-style: italic;
+        }
+
+        .quote-author {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            font-style: normal;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .seo-section {
+            text-align: left;
+            background: var(--dark);
+        }
+
+        .seo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        @media(max-width: 768px) {
+            .seo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .seo-content p {
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .signup {
+            border-top: 1px solid var(--gray);
+        }
+
+        .signup form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .input-container {
+            position: relative;
+            width: 350px;
+            max-width: 100%;
+        }
+
+        .signup input {
+            padding: 15px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--gray);
+            background: var(--darker);
+            color: #fff;
+            width: 100%;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .signup input:focus {
+            border-color: var(--primary);
+            box-shadow: var(--primary-glow);
+        }
 
         .error-popup {
-            position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
-            background: var(--error); color: white; padding: 5px 15px;
-            border-radius: 5px; font-size: 0.8rem; font-weight: bold;
-            white-space: nowrap; display: none; pointer-events: none; z-index: 10;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .error-popup::after {
-            content: ''; position: absolute; bottom: -5px; left: 50%;
-            transform: translateX(-50%); border-left: 6px solid transparent;
-            border-right: 6px solid transparent; border-top: 6px solid var(--error);
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--error);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            white-space: nowrap;
+            display: none;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Expanded Footer */
-        footer { background: var(--darker); padding: 60px 20px 30px; border-top: 2px solid var(--gray); }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left; }
-        .footer-col h4 { color: var(--light); margin-bottom: 20px; }
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 10px; }
-        .footer-col ul li a { color: #777; font-size: 0.9rem; }
-        .footer-col ul li a:hover { color: var(--primary); padding-left: 5px; }
-        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--gray); color: #555; font-size: 0.85rem; }
+        .error-popup::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid var(--error);
+        }
+
+        footer {
+            background: var(--darker);
+            padding: 60px 20px 30px;
+            border-top: 2px solid var(--gray);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .footer-col h4 {
+            color: var(--light);
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray);
+            color: #555;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
+
 <body>
 
     <header>
         <div class="nav-container">
             <div class="logo">⚽ Elite<span>Touch</span></div>
             <ul class="nav-links">
-                <!-- Swapped to anchor tags with data-link (no href) to hide bottom left URL -->
                 <li><a data-link="#home">Home</a></li>
                 <li><a data-link="#preview">Training</a></li>
                 <li><a data-link="#testimonials">Community</a></li>
@@ -231,14 +495,16 @@
         <div class="container">
             <h2>Inside The <span class="text-accent">Platform</span></h2>
             <p style="color: #aaa; margin-bottom: 30px;">Stop guessing. Start tracking. See exactly what your training looks like.</p>
-            
+
             <div class="preview-grid">
                 <div class="mockup">
                     <h4>📊 Player Dashboard</h4>
                     <div class="mockup-content">
                         <p><strong>Current Rank:</strong> Semi-Pro</p>
                         <p>Level 14 Progress:</p>
-                        <div class="progress-bar"><div class="progress-fill"></div></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
                         <p style="text-align: right; font-size: 0.8rem;">3,450 / 4,000 XP</p>
                         <br>
                         <p><strong>Daily Streak:</strong> 🔥 12 Days</p>
@@ -320,7 +586,7 @@
         <div class="container">
             <h2>Join the <span class="text-accent">Beta</span> Roster</h2>
             <p>Secure your spot and get early access to EliteTouch.</p>
-            <form id="betaForm" novalidate> 
+            <form id="betaForm" novalidate>
                 <div class="input-container">
                     <div id="errorPopup" class="error-popup">Please enter a valid email</div>
                     <input type="email" id="userEmail" placeholder="Enter your email address" required>
@@ -369,43 +635,38 @@
     </footer>
 
     <script>
-        // 1. IMPROVED NAVIGATION (Hides URL from status bar)
         document.querySelectorAll('[data-link]').forEach(el => {
             el.addEventListener('click', () => {
                 const target = el.getAttribute('data-link');
                 if(target.startsWith('#')) {
-                    document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+                    document.querySelector(target).scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 } else {
                     window.location.href = target;
                 }
             });
         });
 
-        // 2. FORM VALIDATION & REDIRECTION
         const form = document.getElementById('betaForm');
         const emailInput = document.getElementById('userEmail');
         const errorPopup = document.getElementById('errorPopup');
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // Check if email is valid using built-in HTML5 validation rules
-            if (!emailInput.validity.valid) {
+
+            if(!emailInput.validity.valid) {
                 showError();
             } else {
-                // SUCCESS: Take them to auth page with the email securely passed in the URL parameters
                 const email = encodeURIComponent(emailInput.value);
-                // Replace 'auth.html' with your actual auth page URL if needed
                 window.location.href = `auth.html?email=${email}`;
             }
         });
 
         function showError() {
-            // Show custom tooltip
             errorPopup.style.display = 'block';
             emailInput.style.borderColor = 'var(--error)';
-            
-            // Auto hide tooltip after 3 seconds
+
             setTimeout(() => {
                 errorPopup.style.display = 'none';
                 emailInput.style.borderColor = 'var(--gray)';
@@ -413,4 +674,5 @@
         }
     </script>
 </body>
+
 </html>
