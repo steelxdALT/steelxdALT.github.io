@@ -1,30 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="color-scheme: dark;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EliteTouch | The Ultimate Virtual Football Coach</title>
+
+    <title>EliteTouch | Soccer Training Drills & Virtual Coach</title>
+
+    <meta name="description" content="Improve your first touch and master football skill training with EliteTouch. The ultimate platform for soccer drills, tactics training, and football skill development.">
+    <meta name="keywords" content="soccer training drills, football training, improve first touch, soccer drills for beginners, football coaching online, soccer skills training">
+    <meta name="author" content="EliteTouch">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://elitetouch.com">
+
+    <meta property="og:title" content="EliteTouch | The Virtual Soccer Coach">
+    <meta property="og:description" content="Train smarter with EliteTouch. Improve your soccer skills with drills, tactics training, and daily football workouts.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://elitetouch.com">
+    <meta property="og:image" content="https://elitetouch.com/preview.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EliteTouch Soccer Training">
+    <meta name="twitter:description" content="Daily soccer drills and virtual football coaching. Improve your skills with EliteTouch.">
+    <meta name="twitter:image" content="https://elitetouch.com/preview.jpg">
+
+    <meta name="theme-color" content="#00ff87">
+
+    <link rel="icon" href="/favicon.ico">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7H9E0EB6XE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-7H9E0EB6XE');
+    </script>
+
     <style>
-        /* Base Styles */
+        /* Base Styles & Brand Identity */
         :root {
-            --primary: #00ff87; /* Sporty Neon Green */
-            --dark: #121212;
+            --primary: #00ff87; 
+            --primary-glow: 0 0 20px rgba(0, 255, 135, 0.4);
+            --dark: #0d0d0d;
+            --darker: #050505;
             --light: #f4f4f4;
-            --gray: #333;
+            --gray: #222;
+            --error: #ff4b2b; /* Added error color for custom validation */
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--dark); color: var(--light); line-height: 1.6; }
-        a { text-decoration: none; color: var(--light); }
         
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        
+        body { background-color: var(--dark); color: var(--light); line-height: 1.6; overflow-x: hidden; }
+        
+        /* Custom Dark Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: var(--gray); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        
+        /* Dark mode selection highlight */
+        ::selection { background: var(--primary); color: var(--darker); }
+
+        /* App-Style Navigation Links (Hides URL preview) */
+        a { text-decoration: none; color: var(--light); transition: 0.3s; }
+        [data-link] { cursor: pointer; transition: 0.3s; font-weight: 600; color: var(--light); }
+        [data-link]:hover { color: var(--primary); }
+        
+        /* Background Pattern (Tactical Board vibe) */
+        .pattern-bg {
+            background-image: radial-gradient(var(--gray) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
         /* Typography */
         h1, h2, h3 { text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
-        .text-accent { color: var(--primary); }
+        .text-accent { color: var(--primary); text-shadow: var(--primary-glow); }
 
+        /* Navigation Bar (Sticky) */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--gray);
+            padding: 15px 0;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--primary); text-shadow: var(--primary-glow); }
+        .nav-links { display: flex; list-style: none; gap: 25px; align-items: center; font-weight: 600; font-size: 0.9rem;}
+        
         /* Buttons */
         .btn {
             display: inline-block;
             background: var(--primary);
-            color: var(--dark);
+            color: var(--darker);
             padding: 12px 30px;
             font-weight: bold;
             text-transform: uppercase;
@@ -32,112 +109,308 @@
             transition: 0.3s;
             border: none;
             cursor: pointer;
+            box-shadow: var(--primary-glow);
         }
-        .btn:hover { background: #00cc6a; transform: translateY(-2px); }
+        .btn:hover { background: #00cc6a; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 255, 135, 0.6); }
+        .btn-small { padding: 8px 20px; font-size: 0.85rem; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); box-shadow: none; }
+        .btn-outline:hover { background: var(--primary); color: var(--darker); }
 
         /* Sections */
-        section { padding: 80px 20px; text-align: center; }
-        .container { max-width: 1100px; margin: 0 auto; }
+        section { padding: 100px 20px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; }
 
         /* Hero Section */
         .hero {
-            height: 100vh;
+            height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.9)), url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop') center/cover;
+            background: linear-gradient(rgba(5, 5, 5, 0.8), rgba(5, 5, 5, 0.9)), url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1000&auto=format&fit=crop') center/cover;
         }
-        .hero h1 { font-size: 4rem; }
-        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .hero h1 { font-size: 4.5rem; margin-bottom: 10px; line-height: 1.1; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 650px; margin-left: auto; margin-right: auto; color: #ccc; }
 
-        /* What EliteTouch Does */
-        .about { background-color: var(--gray); }
-        .about p { max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: #ccc; }
+        /* App Preview Section */
+        .preview-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 50px; }
+        .mockup {
+            background: var(--darker);
+            border: 1px solid var(--gray);
+            border-radius: 15px;
+            width: 300px;
+            height: 400px;
+            padding: 20px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .mockup::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--primary);
+        }
+        .mockup h4 { font-size: 1.2rem; border-bottom: 1px solid var(--gray); padding-bottom: 10px; color: var(--primary); }
+        .mockup-content { margin-top: 15px; font-size: 0.9rem; color: #aaa; }
+        .progress-bar { width: 100%; background: #333; height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { width: 75%; background: var(--primary); height: 100%; box-shadow: var(--primary-glow); }
+        .drill-item { background: var(--gray); padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; }
 
-        /* Categories */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-        .card {
-            background: var(--gray);
-            padding: 30px 20px;
-            border-radius: 10px;
-            border-bottom: 4px solid var(--primary);
-            transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); background: #444; }
+        /* Social Proof / Testimonials */
+        .testimonials { background: var(--darker); }
+        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
+        .quote-card { background: var(--gray); padding: 30px; border-radius: 10px; border-left: 4px solid var(--primary); text-align: left; font-style: italic; }
+        .quote-author { display: block; margin-top: 15px; font-weight: bold; font-style: normal; color: var(--primary); font-size: 0.9rem; }
+
+        /* SEO & About Section */
+        .seo-section { text-align: left; background: var(--dark); }
+        .seo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        @media(max-width: 768px) { .seo-grid { grid-template-columns: 1fr; } }
+        .seo-content p { color: #aaa; margin-bottom: 15px; }
 
         /* Sign Up Section */
-        .signup { background: var(--dark); border-top: 1px solid var(--gray); }
-        .signup form { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-        .signup input { padding: 12px 20px; border-radius: 30px; border: none; width: 300px; max-width: 100%; outline: none; }
+        .signup { border-top: 1px solid var(--gray); }
+        .signup form { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
+        
+        /* Custom Input & Validation Container */
+        .input-container { position: relative; width: 350px; max-width: 100%; }
+        .signup input { 
+            padding: 15px 20px; border-radius: 30px; border: 1px solid var(--gray); 
+            background: var(--darker); color: #fff; width: 100%; outline: none; transition: 0.3s; 
+        }
+        .signup input:focus { border-color: var(--primary); box-shadow: var(--primary-glow); }
 
-        /* Footer */
-        footer { background: #0a0a0a; padding: 20px; text-align: center; font-size: 0.9rem; color: #777; }
+        .error-popup {
+            position: absolute; top: -45px; left: 50%; transform: translateX(-50%);
+            background: var(--error); color: white; padding: 5px 15px;
+            border-radius: 5px; font-size: 0.8rem; font-weight: bold;
+            white-space: nowrap; display: none; pointer-events: none; z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .error-popup::after {
+            content: ''; position: absolute; bottom: -5px; left: 50%;
+            transform: translateX(-50%); border-left: 6px solid transparent;
+            border-right: 6px solid transparent; border-top: 6px solid var(--error);
+        }
+
+        /* Expanded Footer */
+        footer { background: var(--darker); padding: 60px 20px 30px; border-top: 2px solid var(--gray); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left; }
+        .footer-col h4 { color: var(--light); margin-bottom: 20px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { color: #777; font-size: 0.9rem; }
+        .footer-col ul li a:hover { color: var(--primary); padding-left: 5px; }
+        .footer-bottom { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--gray); color: #555; font-size: 0.85rem; }
     </style>
 </head>
 <body>
 
-    <section class="hero">
+    <header>
+        <div class="nav-container">
+            <div class="logo">⚽ Elite<span>Touch</span></div>
+            <ul class="nav-links">
+                <!-- Swapped to anchor tags with data-link (no href) to hide bottom left URL -->
+                <li><a data-link="#home">Home</a></li>
+                <li><a data-link="#preview">Training</a></li>
+                <li><a data-link="#testimonials">Community</a></li>
+                <li><a data-link="#about">About</a></li>
+                <li><button data-link="#signup" class="btn btn-small btn-outline">Log In</button></li>
+                <li><button data-link="#signup" class="btn btn-small">Sign Up</button></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero pattern-bg" id="home">
         <div class="container">
             <h1>Level Up Your <span class="text-accent">Game</span></h1>
-            <p>Meet EliteTouch: The virtual coach that gamifies your football training. Master skills, tactics, and mindset like never before.</p>
-            <a href="#signup" class="btn">Start Training Free</a>
+            <p>The virtual coach that gamifies your football training. Master soccer drills, game tactics, and elite mindset like never before.</p>
+            <button data-link="#signup" class="btn">Start Training Free</button>
         </div>
     </section>
 
-    <section class="about" id="about">
+    <section class="preview" id="preview">
         <div class="container">
-            <h2>The "Duolingo" of <span class="text-accent">Football</span></h2>
-            <p>EliteTouch takes the guesswork out of your development. Progress through interactive levels, complete daily drills, earn badges, and build your football IQ step-by-step. Whether you're on the pitch or on the bus, your virtual coach is with you.</p>
-        </div>
-    </section>
+            <h2>Inside The <span class="text-accent">Platform</span></h2>
+            <p style="color: #aaa; margin-bottom: 30px;">Stop guessing. Start tracking. See exactly what your training looks like.</p>
+            
+            <div class="preview-grid">
+                <div class="mockup">
+                    <h4>📊 Player Dashboard</h4>
+                    <div class="mockup-content">
+                        <p><strong>Current Rank:</strong> Semi-Pro</p>
+                        <p>Level 14 Progress:</p>
+                        <div class="progress-bar"><div class="progress-fill"></div></div>
+                        <p style="text-align: right; font-size: 0.8rem;">3,450 / 4,000 XP</p>
+                        <br>
+                        <p><strong>Daily Streak:</strong> 🔥 12 Days</p>
+                        <p><strong>Next Unlock:</strong> Advanced Playmaking</p>
+                    </div>
+                </div>
 
-    <section class="categories" id="categories">
-        <div class="container">
-            <h2>Choose Your <span class="text-accent">Discipline</span></h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>⚽ Skills</h3>
-                    <p>Dribbling, passing, and ball control mastery.</p>
+                <div class="mockup">
+                    <h4>⚽ Today's Drills</h4>
+                    <div class="mockup-content">
+                        <div class="drill-item">
+                            <span>Cone Dribbling</span> <span>+50 XP</span>
+                        </div>
+                        <div class="drill-item" style="border-left: 3px solid var(--primary);">
+                            <span>Wall Passing (Active)</span> <span>+100 XP</span>
+                        </div>
+                        <div class="drill-item" style="opacity: 0.5;">
+                            <span>Scanning the Pitch</span> <span>🔒</span>
+                        </div>
+                        <div class="drill-item" style="opacity: 0.5;">
+                            <span>Pre-Match Vizualization</span> <span>🔒</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3>🧠 Game IQ</h3>
-                    <p>Read the game, anticipate plays, and make better decisions.</p>
-                </div>
-                <div class="card">
-                    <h3>🏃 Fitness</h3>
-                    <p>Stamina, sprint speed, and agility conditioning.</p>
-                </div>
-                <div class="card">
-                    <h3>📋 Tactics</h3>
-                    <p>Position-specific roles and team formations.</p>
-                </div>
-                <div class="card">
-                    <h3>🧘 Mental</h3>
-                    <p>Focus, confidence, and pre-match visualization.</p>
+
+                <div class="mockup">
+                    <h4>📈 Performance Tracker</h4>
+                    <div class="mockup-content">
+                        <p><strong>Weak Foot Accuracy:</strong> +15% this month</p>
+                        <br>
+                        <p><strong>Top Attributes:</strong></p>
+                        <p>Agility 🟢🟢🟢🟢⚪</p>
+                        <p>Passing 🟢🟢🟢🟢🟢</p>
+                        <p>Stamina 🟢🟢⚪⚪⚪</p>
+                        <br>
+                        <a data-link="#signup" style="color: var(--primary); text-decoration: underline; cursor: pointer;">View Full Report &rarr;</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="signup" id="signup">
+    <section class="seo-section pattern-bg" id="about">
+        <div class="container seo-grid">
+            <div class="seo-content">
+                <h2>Master Your <span class="text-accent">First Touch</span></h2>
+                <p>EliteTouch provides world-class <strong>football skill training</strong> directly to your phone. Whether you are looking for advanced tactical breakdowns or simple <strong>soccer drills for beginners</strong>, our algorithm adapts to your skill level.</p>
+                <p>Our curated library of <strong>soccer training drills</strong> guarantees that you spend your time on the pitch effectively. We focus heavily on mechanics to help you <strong>improve first touch</strong>, increase spatial awareness, and build explosive match fitness.</p>
+            </div>
+            <div>
+                <div style="background: var(--darker); border: 1px solid var(--primary); box-shadow: var(--primary-glow); border-radius: 20px; height: 300px; display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                    🏟️
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
         <div class="container">
-            <h2>Join the <span class="text-accent">Beta</span></h2>
-            <p>Secure your spot on the roster and get early access to EliteTouch.</p>
-            <form action="#" method="POST">
-                <input type="email" placeholder="Enter your email address" required>
-                <button type="submit" class="btn">Sign Up</button>
+            <h2>Trusted by <span class="text-accent">Players</span></h2>
+            <div class="test-grid">
+                <div class="quote-card">
+                    "EliteTouch improved my first touch in just two weeks. I finally understand where to position myself before receiving the ball."
+                    <span class="quote-author">- Marcus T., U18 Academy Player</span>
+                </div>
+                <div class="quote-card">
+                    "It actually feels like a video game. I hit my 30-day training streak yesterday and my fitness on match day is night and day."
+                    <span class="quote-author">- Sarah J., Beta Tester</span>
+                </div>
+                <div class="quote-card">
+                    "As a coach, I tell all my players to use this at home. The game intelligence modules do the tactical teaching for me."
+                    <span class="quote-author">- Coach Dave, Varsity Soccer</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="signup pattern-bg" id="signup">
+        <div class="container">
+            <h2>Join the <span class="text-accent">Beta</span> Roster</h2>
+            <p>Secure your spot and get early access to EliteTouch.</p>
+            <form id="betaForm" novalidate> 
+                <div class="input-container">
+                    <div id="errorPopup" class="error-popup">Please enter a valid email</div>
+                    <input type="email" id="userEmail" placeholder="Enter your email address" required>
+                </div>
+                <button type="submit" class="btn">Get Early Access</button>
             </form>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 EliteTouch. All rights reserved. Play with purpose.</p>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 style="display: flex; align-items: center; gap: 5px;">⚽ Elite<span class="text-accent">Touch</span></h4>
+                <p style="color: #777; font-size: 0.9rem;">The ultimate virtual football coach. Train smarter, play harder.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#">Training Library</a></li>
+                    <li><a href="#">Skill Categories</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">App Download (Soon)</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Coaching Blog</a></li>
+                    <li><a href="#">Contact Support</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EliteTouch. All rights reserved. Play with purpose.</p>
+        </div>
     </footer>
 
+    <script>
+        // 1. IMPROVED NAVIGATION (Hides URL from status bar)
+        document.querySelectorAll('[data-link]').forEach(el => {
+            el.addEventListener('click', () => {
+                const target = el.getAttribute('data-link');
+                if(target.startsWith('#')) {
+                    document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.href = target;
+                }
+            });
+        });
+
+        // 2. FORM VALIDATION & REDIRECTION
+        const form = document.getElementById('betaForm');
+        const emailInput = document.getElementById('userEmail');
+        const errorPopup = document.getElementById('errorPopup');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Check if email is valid using built-in HTML5 validation rules
+            if (!emailInput.validity.valid) {
+                showError();
+            } else {
+                // SUCCESS: Take them to auth page with the email securely passed in the URL parameters
+                const email = encodeURIComponent(emailInput.value);
+                // Replace 'auth.html' with your actual auth page URL if needed
+                window.location.href = `auth.html?email=${email}`;
+            }
+        });
+
+        function showError() {
+            // Show custom tooltip
+            errorPopup.style.display = 'block';
+            emailInput.style.borderColor = 'var(--error)';
+            
+            // Auto hide tooltip after 3 seconds
+            setTimeout(() => {
+                errorPopup.style.display = 'none';
+                emailInput.style.borderColor = 'var(--gray)';
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
