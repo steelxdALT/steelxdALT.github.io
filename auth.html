@@ -597,11 +597,18 @@
         };
 
         window.signInWithGoogle = async () => {
+            const provider = new GoogleAuthProvider();
             try {
-                await signInWithPopup(auth, new GoogleAuthProvider());
+                // Waits for the Google Account selection popup to finish securely
+                const result = await signInWithPopup(auth, provider);
+                console.log("Successfully logged in as: ", result.user.email);
+                
+                // Only move to the captcha if login was successful
                 nextStep(2);
             } catch (err) {
-                nextStep(2);
+                console.error("Google Sign-In Error:", err);
+                // Stops the user from passing and shows the real error
+                alert("Google Sign-in failed: " + err.message + "\n\n(Note: If you are in a preview environment, popups might be blocked. Try Email/Password for testing, or whitelist this preview domain in your Firebase Console.)");
             }
         };
 
