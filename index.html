@@ -464,6 +464,90 @@
             color: #555;
             font-size: 0.85rem;
         }
+
+        @media (max-width: 768px) {
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 0.95rem;
+            }
+
+            .hide-mobile {
+                display: none;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .btn-small {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                margin-bottom: 25px;
+                padding: 0 10px;
+            }
+
+            .mockup {
+                width: 100%;
+                max-width: 320px;
+                height: auto;
+                min-height: 380px;
+            }
+
+            .seo-grid {
+                text-align: center;
+                gap: 30px;
+            }
+
+            .seo-grid>div:last-child>div {
+                height: 200px;
+                font-size: 3rem;
+            }
+
+            .signup form {
+                flex-direction: column;
+                width: 100%;
+                max-width: 350px;
+                margin: 30px auto 0;
+            }
+
+            .signup input,
+            .signup button {
+                width: 100%;
+            }
+
+            .input-container {
+                width: 100%;
+            }
+
+            footer {
+                padding: 40px 20px 20px;
+            }
+
+            .footer-grid {
+                gap: 30px;
+                text-align: center;
+            }
+
+            .footer-col h4 {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
@@ -473,10 +557,10 @@
         <div class="nav-container">
             <div class="logo">⚽ Elite<span>Touch</span></div>
             <ul class="nav-links">
-                <li><a data-link="#home">Home</a></li>
-                <li><a data-link="#preview">Training</a></li>
-                <li><a data-link="#testimonials">Community</a></li>
-                <li><a data-link="#about">About</a></li>
+                <li class="hide-mobile"><a data-link="#home">Home</a></li>
+                <li class="hide-mobile"><a data-link="#preview">Training</a></li>
+                <li class="hide-mobile"><a data-link="#testimonials">Community</a></li>
+                <li class="hide-mobile"><a data-link="#about">About</a></li>
                 <li><button data-link="#signup" class="btn btn-small btn-outline">Log In</button></li>
                 <li><button data-link="#signup" class="btn btn-small">Sign Up</button></li>
             </ul>
