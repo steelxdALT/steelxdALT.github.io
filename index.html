@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ultimate Video Editor | Professional Browser-Based Suite</title>
+  <meta name="title" content="Ultimate Video Editor">
+  <meta name="description" content="A professional-grade, privacy-first, 100% free video editor that runs entirely in your browser. No watermarks, no uploads.">
+  <meta name="keywords" content="video editor, browser editor, free video editor, no watermark, privacy first, html5 video editor">
+  <meta name="author" content="Your Brand Name">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourdomain.com/">
+  <meta property="og:title" content="Ultimate Video Editor - Edit Privacy-First">
+  <meta property="og:description" content="Professional video editing in your browser. No installation, no uploads, 100% free.">
+  <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Ultimate Video Editor">
+  <meta property="twitter:description" content="Edit videos in your browser without compromising your data privacy.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#121212">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <noscript>
+    <div style="
+        position: fixed;
+        inset: 0;
+        background: #121212;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        z-index: 9999;
+        font-family: sans-serif;
+        padding: 20px;
+    ">
+      <div>
+        <h2>JavaScript Required</h2>
+        <p> Ultimate Video Editor requires JavaScript to function. Please enable JavaScript in your browser settings. </p>
+      </div>
+    </div>
+  </noscript>
+</head>
+
+<body>
+  <nav class="top-menu-bar">
+    <div class="menu-root" id="menu-file-root">
+      <div class="menu-label" id="file-menu-label"><span class="mnemonic">F</span>ile</div>
+      <div class="menu-dropdown hidden" id="menu-file-dropdown">
+        <div class="top-menu-item" id="tm-new-folder">
+          <div><span class="mnemonic">N</span>ew Folder</div>
+        </div>
+        <div class="top-menu-item has-submenu" id="tm-upload">
+          <div><span class="mnemonic">U</span>pload</div>
+          <span class="submenu-arrow">▶</span>
+          <div class="submenu hidden" id="menu-upload-sub">
+            <div class="top-menu-item" id="tm-up-files">
+              <div><span class="mnemonic">F</span>iles</div>
+            </div>
+            <div class="top-menu-item" id="tm-up-folder">
+              <div>F<span class="mnemonic">o</span>lder</div>
+            </div>
+          </div>
+        </div>
+        <div class="top-menu-separator"></div>
+        <div class="top-menu-item has-submenu" id="tm-export">
+          <div><span class="mnemonic">E</span>xport</div>
+          <span class="submenu-arrow">▶</span>
+          <div class="submenu hidden" id="menu-export-sub">
+            <div class="top-menu-item" id="tm-ex-mp4">
+              <div>Export as MP<span class="mnemonic">4</span></div>
+            </div>
+            <div class="top-menu-item" id="tm-ex-webm">
+              <div>Export as <span class="mnemonic">W</span>EBM</div>
+            </div>
+            <div class="top-menu-item" id="tm-ex-mkv">
+              <div>Export as <span class="mnemonic">M</span>KV</div>
+            </div>
+          </div>
+        </div>
+        <div class="top-menu-item has-submenu" id="tm-record">
+          <div><span class="mnemonic">R</span>ecord</div>
+          <span class="submenu-arrow">▶</span>
+          <div class="submenu hidden" id="menu-record-sub">
+            <div class="top-menu-item" id="tm-rec-screen">
+              <div><span class="mnemonic">S</span>creen</div>
+            </div>
+            <div class="top-menu-item" id="tm-rec-video">
+              <div><span class="mnemonic">V</span>ideo</div>
+            </div>
+            <div class="top-menu-item" id="tm-rec-audio">
+              <div><span class="mnemonic">A</span>udio</div>
+            </div>
+            <div class="top-menu-item" id="tm-rec-photo">
+              <div><span class="mnemonic">P</span>hoto</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="editor-workspace">
+    <div class="top-workspace">
+      <aside class="left-panel">
+        <nav class="panel-tabs">
+          <button class="active">Media</button>
+          <button>Effects</button>
+          <button>Text</button>
+          <button>Audio</button>
+        </nav>
+        <div class="recording-tools">
+          <button id="btn-screen" title="Record Screen">💻 Screen</button>
+          <button id="btn-video" title="Record Webcam Video">📹 Video</button>
+          <button id="btn-photo" title="Take Webcam Photo">📸 Photo</button>
+          <button id="btn-audio" title="Record Microphone">🎙️ Audio</button>
+        </div>
+        <div id="selection-marquee" class="selection-marquee hidden"></div>
+        <div id="drag-tooltip" class="drag-tooltip hidden"></div>
+        <div class="panel-content" id="media-library">
+          <div class="search-container">
+            <input type="text" id="media-search" placeholder="Search files or #tags...">
+          </div>
+          <div id="folder-header" class="folder-header hidden">
+            <h3 id="folder-title" style="margin: 0; font-size: 14px; color: #fff;">Folder Name</h3>
+            <button id="btn-close-folder" style="background: none; border: none; color: #aaa; cursor: pointer; font-size: 20px; line-height: 1;">&times;</button>
+          </div>
+          <div id="drop-zone" class="drop-zone">
+            <p>Drag & Drop media, folders, or ZIPs here</p>
+            <span>or</span>
+            <input type="file" id="file-input" multiple accept="video/*, audio/*, image/*, .zip">
+            <input type="file" id="folder-input" webkitdirectory directory multiple style="display: none;">
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+              <button class="import-btn" onclick="document.getElementById('file-input').click()">Import Files</button>
+              <button class="import-btn" style="background-color: #444;" onclick="document.getElementById('folder-input').click()">Import Folder</button>
+            </div>
+          </div>
+          <div id="media-grid" class="media-grid">
+          </div>
+        </div>
+        <div id="resize-handle" class="resize-handle"></div>
+      </aside>
+      <button id="toggle-panel" class="sidebar-toggle">&lt;</button>
+      <main class="preview-window">
+        <video id="main-player">
+          <source src="" type="video/mp4"> Your browser does not support the video tag.
+        </video>
+        <canvas id="main-canvas" width="1920" height="1080"></canvas>
+        <div class="playback-controls">
+          <button id="btn-start" class="ctrl-btn" title="Start at Beginning">⏮️</button>
+          <button id="btn-rewind" class="ctrl-btn" title="Rewind 5s">⏪</button>
+          <button id="btn-play-pause" class="ctrl-btn" title="Play/Pause">▶️</button>
+          <button id="btn-fast-forward" class="ctrl-btn" title="Fast Forward 5s">⏩</button>
+          <button id="btn-end" class="ctrl-btn" title="Skip to End">⏭️</button>
+          <div class="speed-control-wrapper">
+            <button id="btn-speed" class="ctrl-btn speed-btn" title="Playback Speed">⏱️ 1.00x</button>
+            <div id="speed-modal" class="speed-modal hidden">
+              <div class="speed-header">
+                <span>Playback Speed</span>
+                <input type="text" id="speed-input" class="speed-text-input" value="1.00x">
+              </div>
+              <input type="range" id="speed-slider" min="0.06" max="16" step="0.01" value="1">
+              <div class="speed-labels">
+                <span>0.06x</span> <span>Snap Range</span>
+                <span>16x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <section class="timeline-panel">
+      <div class="timeline-header">
+        <h3>Timeline</h3>
+        <div class="timeline-tools">
+          <button id="tl-btn-split">Split</button>
+          <button id="tl-btn-delete">Delete</button>
+        </div>
+      </div>
+      <div class="timeline-scroll-container">
+        <div class="timeline-workspace-wrapper">
+          <div class="timeline-ruler" id="timeline-ruler"></div>
+          <div class="timeline-tracks-group" id="timeline-tracks">
+            <div class="timeline-track-row" data-track-type="video" data-track-id="video-3">
+              <div class="track-label">Video 1</div>
+              <div class="track-lane"></div>
+            </div>
+            <div class="timeline-track-row" data-track-type="video" data-track-id="video-2">
+              <div class="track-label">Video 2</div>
+              <div class="track-lane"></div>
+            </div>
+            <div class="timeline-track-row" data-track-type="video" data-track-id="video-1">
+              <div class="track-label">Video 3</div>
+              <div class="track-lane"></div>
+            </div>
+            <div class="timeline-track-row" data-track-type="effect" data-track-id="effect-1">
+              <div class="track-label">Effects</div>
+              <div class="track-lane"></div>
+            </div>
+            <div class="timeline-track-row" data-track-type="text" data-track-id="text-1">
+              <div class="track-label">Text</div>
+              <div class="track-lane"></div>
+            </div>
+            <div class="timeline-track-row" data-track-type="audio" data-track-id="audio-2">
+              <div class="track-label">Audio 2</div>
+              <div class="track-lane"></div>
+            </div>
+            <div class="timeline-track-row" data-track-type="audio" data-track-id="audio-1">
+              <div class="track-label">Audio 1</div>
+              <div class="track-lane"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div id="context-menu" class="context-menu hidden">
+    <div class="menu-item" id="menu-create-folder">Create Folder</div>
+    <div class="menu-item" id="menu-empty-folder">Empty Contents</div>
+    <div class="menu-item" id="menu-remove-from-folder">Remove from Folder</div>
+    <div class="menu-item" id="menu-rename">Rename</div>
+    <div class="menu-item" id="menu-meta">View Metadata</div>
+    <div class="menu-item" id="menu-add-tag">Add Tag</div>
+    <div class="menu-item hidden" id="menu-remove-tag">Remove Tag</div>
+    <div class="menu-item delete" id="menu-delete">Delete</div>
+  </div>
+  <div id="meta-modal" class="meta-modal hidden">
+    <div class="meta-content">
+      <button class="close-btn" id="meta-close" title="Close">&times;</button>
+      <h3>File Metadata</h3>
+      <pre id="meta-text"></pre>
+      <button class="copy-btn" id="meta-copy">Copy to Clipboard</button>
+    </div>
+  </div>
+  <div id="tag-modal" class="meta-modal hidden">
+    <div class="meta-content">
+      <button class="close-btn" id="tag-close" title="Close">&times;</button>
+      <h3>Add a Tag</h3>
+      <input type="text" id="tag-input" placeholder="e.g. b-roll, intro, audio" class="modal-input">
+      <button class="copy-btn" id="tag-save">Save Tag</button>
+    </div>
+  </div>
+  <div id="device-warning" class="device-warning hidden">
+    <div class="device-warning-content">
+      <h3><img src="img/caution.png" alt="Warning" style="width: 24px; height: 24px; margin-right: 5px;"> Performance Notice</h3>
+      <p> This editor is designed for desktop use. For the best performance, please use a PC. </p>
+      <button id="device-warning-btn">I Understand</button>
+      <img src="img/device-warning-computer.png" alt="Desktop computer" class="device-warning-image">
+    </div>
+  </div>
+  <script src="js/main.js"></script>
+  <script src="js/top-menu.js"></script>
+  <script src="js/media-library.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/timeline.js"></script>
+</body>
+
+</html>
