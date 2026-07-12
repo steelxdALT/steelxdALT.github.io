@@ -22,22 +22,10 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#121212">
   <link rel="icon" type="image/png" href="favicon.png">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script rel="preconnect" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="stylesheet" href="css/styles.css">
   <noscript>
-    <div style="
-        position: fixed;
-        inset: 0;
-        background: #121212;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        z-index: 9999;
-        font-family: sans-serif;
-        padding: 20px;
-    ">
+    <div class="noscript-overlay">
       <div>
         <h2>JavaScript Required</h2>
         <p> Ultimate Video Editor requires JavaScript to function. Please enable JavaScript in your browser settings. </p>
@@ -125,17 +113,17 @@
             <input type="text" id="media-search" placeholder="Search files or #tags...">
           </div>
           <div id="folder-header" class="folder-header hidden">
-            <h3 id="folder-title" style="margin: 0; font-size: 14px; color: #fff;">Folder Name</h3>
-            <button id="btn-close-folder" style="background: none; border: none; color: #aaa; cursor: pointer; font-size: 20px; line-height: 1;">&times;</button>
+            <h3 id="folder-title">Folder Name</h3>
+            <button id="btn-close-folder" class="folder-close">&times;</button>
           </div>
           <div id="drop-zone" class="drop-zone">
             <p>Drag & Drop media, folders, or ZIPs here</p>
             <span>or</span>
             <input type="file" id="file-input" multiple accept="video/*, audio/*, image/*, .zip">
             <input type="file" id="folder-input" webkitdirectory directory multiple style="display: none;">
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
-              <button class="import-btn" onclick="document.getElementById('file-input').click()">Import Files</button>
-              <button class="import-btn" style="background-color: #444;" onclick="document.getElementById('folder-input').click()">Import Folder</button>
+            <div class="import-buttons">
+              <button id="btn-import-files" class="import-btn">Import Files</button>
+              <button id="btn-import-folder" class="import-btn import-folder">Import Folder</button>
             </div>
           </div>
           <div id="media-grid" class="media-grid">
@@ -150,11 +138,11 @@
         </video>
         <canvas id="main-canvas" width="1920" height="1080"></canvas>
         <div class="playback-controls">
-          <button id="btn-start" class="ctrl-btn" title="Start at Beginning">⏮️</button>
-          <button id="btn-rewind" class="ctrl-btn" title="Rewind 5s">⏪</button>
-          <button id="btn-play-pause" class="ctrl-btn" title="Play/Pause">▶️</button>
-          <button id="btn-fast-forward" class="ctrl-btn" title="Fast Forward 5s">⏩</button>
-          <button id="btn-end" class="ctrl-btn" title="Skip to End">⏭️</button>
+          <button id="btn-start" class="ctrl-btn" title="Start at Beginning" aria-label="Start at beginning">⏮️</button>
+          <button id="btn-rewind" class="ctrl-btn" title="Rewind 5s" aria-label="Rewind five seconds">⏪</button>
+          <button id="btn-play-pause" class="ctrl-btn" title="Play/Pause" aria-label="Play/pause">▶️</button>
+          <button id="btn-fast-forward" class="ctrl-btn" title="Fast Forward 5s" aria-label="Fast forward five seconds">⏩</button>
+          <button id="btn-end" class="ctrl-btn" title="Skip to End" aria-label="Skip to end">⏭️</button>
           <div class="speed-control-wrapper">
             <button id="btn-speed" class="ctrl-btn speed-btn" title="Playback Speed">⏱️ 1.00x</button>
             <div id="speed-modal" class="speed-modal hidden">
@@ -173,8 +161,12 @@
       </main>
     </div>
     <section class="timeline-panel">
+      <div id="timeline-resize-handle" class="timeline-resize-handle" title="Resize Timeline"></div>
       <div class="timeline-header">
-        <h3>Timeline</h3>
+        <div class="timeline-header-title">
+          <button id="timeline-collapse-toggle" class="timeline-collapse-toggle" title="Collapse Timeline">▾</button>
+          <h3>Timeline</h3>
+        </div>
         <div class="timeline-tools">
           <button id="tl-btn-split">Split</button>
           <button id="tl-btn-delete">Delete</button>
@@ -184,38 +176,21 @@
         <div class="timeline-workspace-wrapper">
           <div class="timeline-ruler" id="timeline-ruler"></div>
           <div class="timeline-tracks-group" id="timeline-tracks">
-            <div class="timeline-track-row" data-track-type="video" data-track-id="video-3">
-              <div class="track-label">Video 1</div>
-              <div class="track-lane"></div>
-            </div>
-            <div class="timeline-track-row" data-track-type="video" data-track-id="video-2">
-              <div class="track-label">Video 2</div>
-              <div class="track-lane"></div>
-            </div>
-            <div class="timeline-track-row" data-track-type="video" data-track-id="video-1">
-              <div class="track-label">Video 3</div>
-              <div class="track-lane"></div>
-            </div>
-            <div class="timeline-track-row" data-track-type="effect" data-track-id="effect-1">
-              <div class="track-label">Effects</div>
-              <div class="track-lane"></div>
-            </div>
-            <div class="timeline-track-row" data-track-type="text" data-track-id="text-1">
-              <div class="track-label">Text</div>
-              <div class="track-lane"></div>
-            </div>
-            <div class="timeline-track-row" data-track-type="audio" data-track-id="audio-2">
-              <div class="track-label">Audio 2</div>
-              <div class="track-lane"></div>
-            </div>
-            <div class="timeline-track-row" data-track-type="audio" data-track-id="audio-1">
-              <div class="track-label">Audio 1</div>
-              <div class="track-lane"></div>
-            </div>
           </div>
         </div>
       </div>
     </section>
+  
+  <template id="track-template">
+    <div class="timeline-track-row" data-track-type="video" data-track-id="">
+      <div class="track-label">Track</div>
+      <div class="track-lane"></div>
+    </div>
+  </template>
+
+  <template id="menu-item-template">
+    <div class="menu-item">Item</div>
+  </template>
   </div>
   <div id="context-menu" class="context-menu hidden">
     <div class="menu-item" id="menu-create-folder">Create Folder</div>
@@ -245,17 +220,17 @@
   </div>
   <div id="device-warning" class="device-warning hidden">
     <div class="device-warning-content">
-      <h3><img src="img/caution.png" alt="Warning" style="width: 24px; height: 24px; margin-right: 5px;"> Performance Notice</h3>
+      <h3><img loading="lazy" decoding="async" src="img/caution.png" alt="Warning" class="device-warning-icon"> Performance Notice</h3>
       <p> This editor is designed for desktop use. For the best performance, please use a PC. </p>
       <button id="device-warning-btn">I Understand</button>
-      <img src="img/device-warning-computer.png" alt="Desktop computer" class="device-warning-image">
+      <img loading="lazy" decoding="async" src="img/device-warning-computer.png" alt="Desktop computer" class="device-warning-image">
     </div>
   </div>
-  <script src="js/main.js"></script>
-  <script src="js/top-menu.js"></script>
-  <script src="js/media-library.js"></script>
-  <script src="js/preview.js"></script>
-  <script src="js/timeline.js"></script>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/top-menu.js"></script>
+  <script defer src="js/media-library.js"></script>
+  <script defer src="js/preview.js"></script>
+  <script defer src="js/timeline.js"></script>
 </body>
 
 </html>
