@@ -1,4 +1,10 @@
 :root {
+  --bg: #121212;
+  --panel: #1e1e1e;
+  --border: #333;
+  --muted: #444;
+  --text: #e0e0e0;
+  --accent: #0a84ff;
   color-scheme: dark;
 }
 
@@ -16,8 +22,8 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: var(--bg);
+  color: var(--text);
   height: 100vh;
   overflow: hidden;
   -webkit-user-select: none;
@@ -39,7 +45,6 @@ video {
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
   pointer-events: none;
 }
 
@@ -75,10 +80,10 @@ video {
 
 .left-panel {
   width: 360px;
-  background-color: #1e1e1e;
+  background-color: var(--panel);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #333;
+  border-right: 1px solid var(--border);
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
@@ -86,6 +91,20 @@ video {
 
 .left-panel.animating {
   transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.noscript-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 9999;
+  font-family: sans-serif;
+  padding: 20px;
 }
 
 .panel-tabs {
@@ -152,20 +171,6 @@ video {
 
 .drop-zone input {
   display: none;
-}
-
-.import-btn {
-  background-color: #0a84ff;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.import-btn:hover {
-  background-color: #0070e0;
 }
 
 .media-grid {
@@ -274,12 +279,25 @@ video {
 }
 
 .timeline-panel {
-  height: 50vh;
+  height: 38vh;
+  min-height: 200px;
+  max-height: 50vh;
   background-color: #181818;
   border-top: 1px solid #333;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: height 0.2s ease;
+}
+
+.timeline-panel.collapsed {
+  min-height: 44px;
+  max-height: 44px;
+}
+
+.timeline-panel.collapsed .timeline-scroll-container,
+.timeline-panel.collapsed .timeline-resize-handle {
+  display: none;
 }
 
 .timeline-scroll-container {
@@ -318,6 +336,14 @@ video {
   pointer-events: none;
 }
 
+.timeline-resize-handle {
+  height: 8px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.16), transparent);
+  cursor: row-resize;
+  flex-shrink: 0;
+}
+
 .timeline-header {
   padding: 10px 20px;
   background-color: #222;
@@ -327,10 +353,26 @@ video {
   align-items: center;
 }
 
+.timeline-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline-collapse-toggle {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+
 .timeline-header h3 {
   font-size: 14px;
   font-weight: normal;
   color: #aaa;
+  margin: 0;
 }
 
 .timeline-tools button {
@@ -373,6 +415,18 @@ video {
   flex-shrink: 0;
   z-index: 5;
   user-select: none;
+  cursor: pointer;
+}
+
+.track-label.editing {
+  outline: none;
+  background-color: #202020;
+  color: #fff;
+}
+
+.track-label[contenteditable="true"] {
+  outline: none;
+  border-right-color: #0a84ff;
 }
 
 .track-lane {
@@ -380,7 +434,7 @@ video {
   position: relative;
   height: 100%;
   background-image: linear-gradient(to right, #1d1d1d 1px, transparent 1px);
-  background-size: 75px 100%;
+  background-size: var(--timeline-grid-size, 75px) 100%;
 }
 
 .timeline-clip {
@@ -449,6 +503,28 @@ video {
   position: relative;
   z-index: 2;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.clip-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.clip-waveform {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.clip-title {
+  position: relative;
+  z-index: 2;
 }
 
 .clip-type-video {
@@ -1066,4 +1142,63 @@ body.show-mnemonics .mnemonic,
   100% {
     opacity: 1;
   }
+}
+
+.device-warning-content h3 img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.device-warning-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.import-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.import-btn {
+  background-color: var(--accent);
+  color: white;
+  border: 1px solid transparent;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.import-btn:hover {
+  background-color: #0070e0;
+}
+
+.import-btn.import-folder {
+  background-color: var(--muted);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.import-btn.import-folder:hover {
+  background-color: #555;
+  border-color: #555;
+}
+
+.folder-close {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.folder-header {
+  background: var(--panel);
+  border: 1px solid var(--border);
 }
