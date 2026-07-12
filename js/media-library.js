@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // === Core Elements ===
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
     const mediaGrid = document.getElementById('media-grid');
@@ -10,13 +9,48 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // === State ===
     let mediaRecorder;
     let recordedChunks = [];
     let currentStream = null;
     let activeFolderId = null;
+    let audioContext = null;
 
-    // === UI Elements ===
+    const getAudioContext = () => {
+        if (!audioContext) {
+            const AudioContextImpl = window.AudioContext || window.webkitAudioContext;
+            audioContext = AudioContextImpl ? new AudioContextImpl() : null;
+        }
+        return audioContext;
+    };
+
+    function showCameraError() {
+        let warning = document.getElementById('camera-error-modal');
+        if (!warning) {
+            warning = document.createElement('div');
+            warning.id = 'camera-error-modal';
+            warning.className = 'device-warning';
+            warning.innerHTML = `
+                <div class="device-warning-content">
+                    <h3>📷 Camera Error</h3>
+                    <p>No working webcam was found, or the camera is currently in use by another application.</p>
+                    <button id="close-camera-error">Dismiss</button>
+                </div>
+            `;
+            document.body.appendChild(warning);
+            
+            document.getElementById('close-camera-error').addEventListener('click', () => {
+                warning.classList.add('hidden');
+            });
+        }
+        warning.classList.remove('hidden');
+    }
+
+    const setMenuItemVisible = (menuItem, visible) => {
+        if (!menuItem) return;
+        menuItem.classList.toggle('hidden', !visible);
+        menuItem.style.display = visible ? '' : 'none';
+    };
+
     const folderHeader = document.getElementById("folder-header");
     const folderTitle = document.getElementById("folder-title");
     const btnCloseFolder = document.getElementById("btn-close-folder");
@@ -49,12 +83,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const folderInput = document.getElementById("folder-input");
     const mediaSearch = document.getElementById("media-search");
 
-    // === Global Drag Prevention ===
+    const btnImportFiles = document.getElementById('btn-import-files');
+    const btnImportFolder = document.getElementById('btn-import-folder');
+    if (btnImportFiles && fileInput) btnImportFiles.addEventListener('click', () => fileInput.click());
+    if (btnImportFolder && folderInput) btnImportFolder.addEventListener('click', () => folderInput.click());
+
     const preventDefault = (e) => e.preventDefault();
     window.addEventListener('dragover', preventDefault);
     window.addEventListener('drop', preventDefault);
 
-    // === Drop Zone Behavior ===
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropZone.classList.add('drag-active');
@@ -255,6 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (err) {
             console.error("Webcam access denied", err);
+            showCameraError();
         }
     });
 
@@ -328,6 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (err) {
             console.error("Webcam Error:", err);
+            showCameraError();
             stopStream();
         }
     });
@@ -348,6 +387,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return map[ext] || '';
     }
+
+    async function renderAudioWaveform(url, canvas, accentColor = '#5cd38d') {
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        if (canvas.clientWidth === 0) {
+            await new Promise(resolve => requestAnimationFrame(resolve));
+        }
+
+        const dpr = window.devicePixelRatio || 1;
+        const cssWidth = canvas.clientWidth || canvas.width || 180;
+        const cssHeight = canvas.clientHeight || canvas.height || 80;
+        
+        const width = Math.max(1, Math.round(cssWidth * dpr));
+        const height = Math.max(1, Math.round(cssHeight * dpr));
+
+        if (canvas.width !== width || canvas.height !== height) {
+            canvas.width = width;
+            canvas.height = height;
+        }
+        
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, cssWidth, cssHeight);
+        
+        ctx.fillStyle = '#111';
+        ctx.fillRect(0, 0, cssWidth, cssHeight);
+
+        try {
+            const response = await fetch(url);
+            const arrayBuffer = await response.arrayBuffer();
+            const audioContextInstance = getAudioContext();
+
+            if (!audioContextInstance) {
+                throw new Error("AudioContext not available");
+            }
+
+            if (audioContextInstance.state === 'suspended') {
+                await audioContextInstance.resume();
+            }
+
+            const audioBuffer = await audioContextInstance.decodeAudioData(arrayBuffer);
+            const channelData = audioBuffer.getChannelData(0);
+            
+            const centerY = cssHeight / 2;
+            const barWidth = 2;
+            const gap = 1;
+            const step = barWidth + gap;
+            const barsCount = Math.floor(cssWidth / step);
+            const sampleStep = Math.max(1, Math.floor(channelData.length / barsCount));
+
+            ctx.fillStyle = accentColor;
+            
+            for (let i = 0; i < barsCount; i++) {
+                const start = i * sampleStep;
+                const end = Math.min(channelData.length, start + sampleStep);
+                let peak = 0;
+                
+                for (let j = start; j < end; j++) {
+                    const val = Math.abs(channelData[j]);
+                    if (val > peak) peak = val;
+                }
+                
+                const barHeight = Math.max(2, peak * cssHeight * 0.85); 
+                const x = i * step;
+                const y = centerY - (barHeight / 2);
+                
+                ctx.fillRect(x, y, barWidth, barHeight);
+            }
+        } catch (err) {
+            console.warn('Waveform rendering failed', err);
+            ctx.fillStyle = '#777';
+            ctx.font = '12px sans-serif';
+            ctx.fillText('Audio', 12, 24);
+        }
+    }
+
+    window.renderAudioWaveform = renderAudioWaveform;
 
     function updateGridView() {
         const currentParent = activeFolderId || 'root';
@@ -489,6 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         for(const file of files) {
             const type = file.type || getMimeType(file.name) || '';
+            const isGif = type === 'image/gif' || file.name.toLowerCase().endsWith('.gif');
 
             if(!type.startsWith('video/') && !type.startsWith('audio/') && !type.startsWith('image/')) continue;
 
@@ -502,11 +621,30 @@ document.addEventListener("DOMContentLoaded", () => {
             const isAudio = type.startsWith('audio/');
 
             item.innerHTML = `
+                ${isGif ? `<canvas class="media-thumbnail" width="180" height="110"></canvas>` : ""}
                 ${isVideo ? `<video class="media-thumbnail" src="${url}" muted></video>` : ""}
-                ${isImage ? `<img class="media-thumbnail" src="${url}">` : ""}
-                ${isAudio ? `<div class="media-thumbnail audio-thumb">🎵</div>` : ""}
+                ${isImage && !isGif ? `<img class="media-thumbnail" src="${url}">` : ""}
+                ${isAudio ? `<canvas class="media-thumbnail audio-waveform-canvas" width="180" height="80"></canvas>` : ""}
                 <div class="media-name"></div>
-            `
+            `;
+
+            if (isGif) {
+                const thumbCanvas = item.querySelector('canvas.media-thumbnail');
+                if (thumbCanvas) {
+                    thumbCanvas.style.background = '#111';
+                    const ctx = thumbCanvas.getContext('2d');
+                    const thumbImg = new Image();
+                    thumbImg.onload = () => {
+                        if (!ctx) return;
+                        ctx.clearRect(0, 0, thumbCanvas.width, thumbCanvas.height);
+                        const scale = Math.min(thumbCanvas.width / thumbImg.naturalWidth, thumbCanvas.height / thumbImg.naturalHeight);
+                        const drawWidth = thumbImg.naturalWidth * scale;
+                        const drawHeight = thumbImg.naturalHeight * scale;
+                        ctx.drawImage(thumbImg, (thumbCanvas.width - drawWidth) / 2, (thumbCanvas.height - drawHeight) / 2, drawWidth, drawHeight);
+                    };
+                    thumbImg.src = url;
+                }
+            }
 
             const nameElement = item.querySelector('.media-name');
             if(nameElement) nameElement.textContent = file.name;
@@ -515,19 +653,45 @@ document.addEventListener("DOMContentLoaded", () => {
             item.dataset.filename = file.name;
             item.dataset.fullname = file.name;
             item.dataset.filetype = type;
+            item.dataset.isGif = isGif ? 'true' : 'false';
             item.dataset.filesize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
             item.dataset.lastmod = file.lastModified ? new Date(file.lastModified).toLocaleString() : 'Unknown';
             item.dataset.tag = "";
             item.dataset.parentFolder = file.customParentId || targetFolderId || activeFolderId || 'root';
 
-            item.dataset.duration = isImage ? 5 : 12;
+            item.dataset.duration = isGif || isImage ? 5 : 12;
             if (isVideo || isAudio) {
                 const media = document.createElement(isVideo ? 'video' : 'audio');
                 media.preload = 'metadata';
                 media.onloadedmetadata = () => {
                     item.dataset.duration = media.duration;
+                    if (isVideo) {
+                        item.dataset.resolution = `${media.videoWidth || 0}x${media.videoHeight || 0}`;
+                        try {
+                            const q = media.getVideoPlaybackQuality && media.getVideoPlaybackQuality();
+                            if (q && q.totalVideoFrames && media.duration) {
+                                item.dataset.fps = (q.totalVideoFrames / media.duration).toFixed(2);
+                            }
+                        } catch (err) {}
+                    }
+                    if (isAudio) {
+                        try {
+                            const ac = getAudioContext();
+                            fetch(url).then(r => r.arrayBuffer()).then(buf => ac.decodeAudioData(buf)).then(ab => {
+                                item.dataset.audioChannels = ab.numberOfChannels;
+                                item.dataset.sampleRate = ab.sampleRate;
+                            }).catch(() => {});
+                        } catch (err) {}
+                    }
                 };
                 media.src = url;
+            }
+
+            if (isAudio) {
+                const audioCanvas = item.querySelector('canvas.audio-waveform-canvas');
+                if (audioCanvas) {
+                    renderAudioWaveform(url, audioCanvas, '#5cd38d');
+                }
             }
 
             item.addEventListener('click', () => {
@@ -586,6 +750,11 @@ document.addEventListener("DOMContentLoaded", () => {
     menuRename?.addEventListener('click', () => {
         contextMenu.classList.add('hidden');
 
+        if (contextMenu.dataset.mode === 'track' && window.__activeTrackRenameTarget) {
+            window.startTrackRename?.(window.__activeTrackRenameTarget);
+            return;
+        }
+
         if(!selectedItems.length) return;
 
         const item = selectedItems[0];
@@ -604,11 +773,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const item = selectedItems[0];
         const d = item.dataset;
 
-        metaText.textContent =
-            `Name: ${d.filename}
-Type: ${d.filetype}
-Size: ${d.filesize}
-Last Modified: ${d.lastmod}`;
+        const lines = [];
+        lines.push(`Name: ${d.filename || 'Unknown'}`);
+        lines.push(`Type: ${d.filetype || 'Unknown'}`);
+        lines.push(`Duration: ${d.duration ? parseFloat(d.duration).toFixed(2) + 's' : 'N/A'}`);
+        lines.push(`Resolution: ${d.resolution || 'N/A'}`);
+        if (d.fps) lines.push(`FPS: ${d.fps}`);
+        if (d.audioChannels || d.sampleRate) lines.push(`Audio: ${d.audioChannels ? d.audioChannels + 'ch' : ''}${d.sampleRate ? ' @ ' + d.sampleRate + 'Hz' : ''}`);
+        lines.push(`Size: ${d.filesize || 'N/A'}`);
+        lines.push(`Modified: ${d.lastmod || 'N/A'}`);
+
+        metaText.textContent = lines.join('\n');
 
         metaModal.classList.remove('hidden');
     });
@@ -733,18 +908,18 @@ Last Modified: ${d.lastmod}`;
 
         const targetItem = e.target.closest('.media-item');
 
-        menuRename.style.display = 'none';
-        menuDelete.style.display = 'none';
-        menuMeta.style.display = 'none';
-        menuCreateFolder.style.display = 'none';
-        menuEmptyFolder.style.display = 'none';
-        menuRemoveFromFolder.style.display = 'none';
-        menuAddTag.style.display = 'none';
-        menuRemoveTag.style.display = 'none';
+        setMenuItemVisible(menuRename, false);
+        setMenuItemVisible(menuDelete, false);
+        setMenuItemVisible(menuMeta, false);
+        setMenuItemVisible(menuCreateFolder, false);
+        setMenuItemVisible(menuEmptyFolder, false);
+        setMenuItemVisible(menuRemoveFromFolder, false);
+        setMenuItemVisible(menuAddTag, false);
+        setMenuItemVisible(menuRemoveTag, false);
 
         if(!targetItem) {
             clearSelection();
-            menuCreateFolder.style.display = 'block';
+            setMenuItemVisible(menuCreateFolder, true);
         } else {
             if(!selectedItems.includes(targetItem)) {
                 clearSelection();
@@ -753,21 +928,21 @@ Last Modified: ${d.lastmod}`;
 
             const isMulti = selectedItems.length > 1;
 
-            menuDelete.style.display = 'block';
+            setMenuItemVisible(menuDelete, true);
 
             if(!isMulti) {
-                menuRename.style.display = 'block';
+                setMenuItemVisible(menuRename, true);
 
                 if(targetItem.dataset.isFolder === "true") {
-                    menuEmptyFolder.style.display = 'block';
+                    setMenuItemVisible(menuEmptyFolder, true);
                 } else {
-                    menuMeta.style.display = 'block';
+                    setMenuItemVisible(menuMeta, true);
 
                     const tag = (targetItem.dataset.tag || "").trim();
                     const hasTag = tag !== "";
 
-                    menuAddTag.style.display = hasTag ? 'none' : 'block';
-                    menuRemoveTag.style.display = hasTag ? 'block' : 'none';
+                    setMenuItemVisible(menuAddTag, !hasTag);
+                    setMenuItemVisible(menuRemoveTag, hasTag);
                 }
             }
 
@@ -778,7 +953,7 @@ Last Modified: ${d.lastmod}`;
             );
 
             if(anyInFolder) {
-                menuRemoveFromFolder.style.display = 'block';
+                setMenuItemVisible(menuRemoveFromFolder, true);
             }
         }
 
