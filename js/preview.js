@@ -76,6 +76,10 @@ if (btnSpeed && speedModal) {
     btnSpeed.addEventListener('click', (e) => {
         e.stopPropagation();
         speedModal.classList.toggle('hidden');
+        if (!speedModal.classList.contains('hidden')) {
+            speedInput.focus();
+            setTimeout(() => speedInput.select(), 0);
+        }
     });
 
     const applySpeed = (val) => {
@@ -92,6 +96,8 @@ if (btnSpeed && speedModal) {
 
     speedSlider.addEventListener('input', (e) => applySpeed(e.target.value));
     speedInput.addEventListener('change', (e) => applySpeed(e.target.value.replace('x', '')));
+    speedInput.addEventListener('focus', () => setTimeout(() => speedInput.select(), 0));
+    speedInput.addEventListener('click', () => speedInput.select());
 
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.speed-control-wrapper')) {
