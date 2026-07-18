@@ -80,23 +80,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const seekVideoToTime = (video, time) => {
         return new Promise((resolve) => {
-            const dur = isNaN(video.duration) ? time + 1 : video.duration;
-            const target = Math.min(time, Math.max(0, dur - 0.05));
-            
-            if (Math.abs(video.currentTime - target) < 0.02) {
-                return resolve();
+
+            if (video.readyState < 1) {
+                video.addEventListener("loadedmetadata", () => {
+                    seekVideoToTime(video, time).then(resolve);
+                }, { once: true });
+                return;
             }
+
+            const target = Math.max(
+                0,
+                Math.min(time, video.duration - 0.05)
+            );
             
-            let timeoutId;
-            const onSeeked = () => {
-                clearTimeout(timeoutId);
-                video.removeEventListener('seeked', onSeeked);
+            if (Math.abs(video.currentTime - target) < 0.01) {
+                resolve();
+                return;
+            }
+
+            let finished = false;
+
+            const done = () => {
+                if (finished) return;
+                finished = true;
+                video.removeEventListener("seeked", done);
                 resolve();
             };
             
-            timeoutId = setTimeout(onSeeked, 500); 
-            video.addEventListener('seeked', onSeeked);
+            video.addEventListener("seeked", done);
+
             video.currentTime = target;
+
+            setTimeout(done, 120);
         });
     };
 
@@ -109,11 +124,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const previewMedia = clip.previewMedia;
+        
         const ctx = updateCanvasForDPR(previewCanvas);
         if (!ctx) return;
 
         const width = previewCanvas.clientWidth;
         const height = previewCanvas.clientHeight;
+
+        const frameCount = Math.min(
+            8,
+            Math.max(3, Math.floor(width / 120))
+        );
+
+        const cacheKey = `${width}_${height}_${frameCount}`;
+
+        let clipCache = previewCache.get(clip);
+
+        if (!clipCache) {
+            clipCache = new Map();
+            previewCache.set(clip, clipCache);
+        }
+
+        if (clipCache.has(cacheKey)) {
+            ctx.drawImage(clipCache.get(cacheKey), 0, 0);
+            return;
+        }
         
         if (width === 0 || height === 0) return;
 
@@ -126,7 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const assetType = clip.dataset.assetType;
         const isGif = clip.dataset.isGif === 'true';
         const duration = Math.max(0.5, parseFloat(clip.dataset.durationSeconds) || 1);
-        const frameCount = Math.min(12, Math.max(1, Math.ceil(width / 72)));
         const frameWidth = width / frameCount;
         const frameHeight = height;
 
@@ -148,15 +182,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 previewMedia.addEventListener('loadeddata', () => renderClipPreview(clip), { once: true });
                 return;
             }
-            for (let i = 0; i < frameCount; i += 1) {
-                const sampleTime = Math.min(duration, (i / frameCount) * duration);
+            let lastGoodTime = 0.05;
+
+            for (let i = 0; i < frameCount; i++) {
+
+                const sampleTime = i === 0 ? 0.05 : (duration * i) / (frameCount - 1);
+
                 try {
                     await seekVideoToTime(previewMedia, sampleTime);
-                } catch (err) {
-                    continue;
+                    lastGoodTime = sampleTime;
+                } catch {
+                    await seekVideoToTime(previewMedia, lastGoodTime);
                 }
+
                 drawFrame(previewMedia, i);
+
+                await new Promise(requestAnimationFrame);
             }
+            try {
+                const bitmap = await createImageBitmap(previewCanvas);
+                clipCache.set(cacheKey, bitmap);
+            } catch {}
             return;
         }
 
@@ -168,13 +214,19 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = 0; i < frameCount; i += 1) {
                 drawFrame(previewMedia, i);
             }
+            try {
+                const bitmap = await createImageBitmap(previewCanvas);
+                clipCache.set(cacheKey, bitmap);
+            } catch {}
             return;
         }
     };
 
     const refreshClipPreviews = () => {
-        document.querySelectorAll('.timeline-clip').forEach((clip) => {
-            renderClipPreview(clip).catch(() => {});
+        requestIdleCallback(() => {
+            document.querySelectorAll(".timeline-clip").forEach((clip) => {
+                renderClipPreview(clip).catch(() => {});
+            });
         });
     };
     let isTimelineCollapsed = false;
@@ -184,6 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let dragState = null;
     let initialPinchDistance = null;
     let initialPPS = null;
+    let previewRefreshTimeout = null;
+    const previewCache = new WeakMap();
 
     window.currentTimelineTime = 0;
     window.__activeTrackRenameTarget = null;
@@ -306,6 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.timeline-clip').forEach(clip => {
             clip.style.left = `${parseFloat(clip.dataset.startSeconds) * PIXELS_PER_SECOND}px`;
             clip.style.width = `${parseFloat(clip.dataset.durationSeconds) * PIXELS_PER_SECOND}px`;
+            previewCache.delete(clip);
         });
 
         updatePlayhead(window.currentTimelineTime);
@@ -327,7 +382,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             PIXELS_PER_SECOND = Math.max(2, Math.min(PIXELS_PER_SECOND, 300));
             updateTimelineLayout();
-            refreshClipPreviews();
+            clearTimeout(previewRefreshTimeout);
+
+            previewRefreshTimeout = setTimeout(() => {
+                refreshClipPreviews();
+            }, 100);
 
             const newMouseX = (timeAtCursor * PIXELS_PER_SECOND) + TRACK_OFFSET;
             scrollContainer.scrollLeft = newMouseX - (e.clientX - scrollContainer.getBoundingClientRect().left);
@@ -347,7 +406,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const scale = currentDistance / initialPinchDistance;
             PIXELS_PER_SECOND = Math.max(2, Math.min(initialPPS * scale, 300));
             updateTimelineLayout();
-            refreshClipPreviews();
+            clearTimeout(previewRefreshTimeout);
+
+            previewRefreshTimeout = setTimeout(() => {
+                refreshClipPreviews();
+            }, 100);
         }
     }, { passive: false });
 
@@ -478,6 +541,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!checkCollision(dragState.lane, proposedLeftSecs * PIXELS_PER_SECOND, dragState.startDurSecs * PIXELS_PER_SECOND, dragState.clip)) {
                 dragState.clip.dataset.startSeconds = proposedLeftSecs;
                 dragState.clip.style.left = `${proposedLeftSecs * PIXELS_PER_SECOND}px`;
+                previewCache.delete(clip);
             }
 
         } else if (dragState.action === 'resize-right') {
@@ -485,6 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!checkCollision(dragState.lane, dragState.startSecs * PIXELS_PER_SECOND, proposedDur * PIXELS_PER_SECOND, dragState.clip)) {
                 dragState.clip.dataset.durationSeconds = proposedDur;
                 dragState.clip.style.width = `${proposedDur * PIXELS_PER_SECOND}px`;
+                previewCache.delete(clip);
             }
         } else if (dragState.action === 'resize-left') {
             let proposedStart = dragState.startSecs + deltaSecs;
@@ -495,6 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 dragState.clip.dataset.durationSeconds = proposedDur;
                 dragState.clip.style.left = `${proposedStart * PIXELS_PER_SECOND}px`;
                 dragState.clip.style.width = `${proposedDur * PIXELS_PER_SECOND}px`;
+                previewCache.delete(clip);
             }
         }
     });
@@ -661,6 +727,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 lane.appendChild(clipBlock);
+                previewCache.delete(clipBlock);
                 selectClip(clipBlock);
                 renderClipPreview(clipBlock).catch(() => {});
             } catch (err) {
