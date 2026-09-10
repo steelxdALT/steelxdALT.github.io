@@ -1,236 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Ultimate Video Editor | Professional Browser-Based Suite</title>
-  <meta name="title" content="Ultimate Video Editor">
-  <meta name="description" content="A professional-grade, privacy-first, 100% free video editor that runs entirely in your browser. No watermarks, no uploads.">
-  <meta name="keywords" content="video editor, browser editor, free video editor, no watermark, privacy first, html5 video editor">
-  <meta name="author" content="Your Brand Name">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yourdomain.com/">
-  <meta property="og:title" content="Ultimate Video Editor - Edit Privacy-First">
-  <meta property="og:description" content="Professional video editing in your browser. No installation, no uploads, 100% free.">
-  <meta property="og:image" content="https://yourdomain.com/og-image.jpg">
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="Ultimate Video Editor">
-  <meta property="twitter:description" content="Edit videos in your browser without compromising your data privacy.">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#121212">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <script rel="preconnect" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <link rel="stylesheet" href="css/styles.css">
-  <noscript>
-    <div class="noscript-overlay">
-      <div>
-        <h2>JavaScript Required</h2>
-        <p> Ultimate Video Editor requires JavaScript to function. Please enable JavaScript in your browser settings. </p>
-      </div>
-    </div>
-  </noscript>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmony Middle School — Bell Clock</title>
+<meta name="description" content="Live bell schedule clock for Harmony Middle School.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <nav class="top-menu-bar">
-    <div class="menu-root" id="menu-file-root">
-      <div class="menu-label" id="file-menu-label"><span class="mnemonic">F</span>ile</div>
-      <div class="menu-dropdown hidden" id="menu-file-dropdown">
-        <div class="top-menu-item" id="tm-new-folder">
-          <div><span class="mnemonic">N</span>ew Folder</div>
-        </div>
-        <div class="top-menu-item has-submenu" id="tm-upload">
-          <div><span class="mnemonic">U</span>pload</div>
-          <span class="submenu-arrow">▶</span>
-          <div class="submenu hidden" id="menu-upload-sub">
-            <div class="top-menu-item" id="tm-up-files">
-              <div><span class="mnemonic">F</span>iles</div>
-            </div>
-            <div class="top-menu-item" id="tm-up-folder">
-              <div>F<span class="mnemonic">o</span>lder</div>
-            </div>
-          </div>
-        </div>
-        <div class="top-menu-separator"></div>
-        <div class="top-menu-item has-submenu" id="tm-export">
-          <div><span class="mnemonic">E</span>xport</div>
-          <span class="submenu-arrow">▶</span>
-          <div class="submenu hidden" id="menu-export-sub">
-            <div class="top-menu-item" id="tm-ex-mp4">
-              <div>Export as MP<span class="mnemonic">4</span></div>
-            </div>
-            <div class="top-menu-item" id="tm-ex-webm">
-              <div>Export as <span class="mnemonic">W</span>EBM</div>
-            </div>
-            <div class="top-menu-item" id="tm-ex-mkv">
-              <div>Export as <span class="mnemonic">M</span>KV</div>
-            </div>
-          </div>
-        </div>
-        <div class="top-menu-item has-submenu" id="tm-record">
-          <div><span class="mnemonic">R</span>ecord</div>
-          <span class="submenu-arrow">▶</span>
-          <div class="submenu hidden" id="menu-record-sub">
-            <div class="top-menu-item" id="tm-rec-screen">
-              <div><span class="mnemonic">S</span>creen</div>
-            </div>
-            <div class="top-menu-item" id="tm-rec-video">
-              <div><span class="mnemonic">V</span>ideo</div>
-            </div>
-            <div class="top-menu-item" id="tm-rec-audio">
-              <div><span class="mnemonic">A</span>udio</div>
-            </div>
-            <div class="top-menu-item" id="tm-rec-photo">
-              <div><span class="mnemonic">P</span>hoto</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
-  <div class="editor-workspace">
-    <div class="top-workspace">
-      <aside class="left-panel">
-        <nav class="panel-tabs">
-          <button class="active">Media</button>
-          <button>Effects</button>
-          <button>Text</button>
-          <button>Audio</button>
-        </nav>
-        <div class="recording-tools">
-          <button id="btn-screen" title="Record Screen">💻 Screen</button>
-          <button id="btn-video" title="Record Webcam Video">📹 Video</button>
-          <button id="btn-photo" title="Take Webcam Photo">📸 Photo</button>
-          <button id="btn-audio" title="Record Microphone">🎙️ Audio</button>
-        </div>
-        <div id="selection-marquee" class="selection-marquee hidden"></div>
-        <div id="drag-tooltip" class="drag-tooltip hidden"></div>
-        <div class="panel-content" id="media-library">
-          <div class="search-container">
-            <input type="text" id="media-search" placeholder="Search files or #tags...">
-          </div>
-          <div id="folder-header" class="folder-header hidden">
-            <h3 id="folder-title">Folder Name</h3>
-            <button id="btn-close-folder" class="folder-close">&times;</button>
-          </div>
-          <div id="drop-zone" class="drop-zone">
-            <p>Drag & Drop media, folders, or ZIPs here</p>
-            <span>or</span>
-            <input type="file" id="file-input" multiple accept="video/*, audio/*, image/*, .zip">
-            <input type="file" id="folder-input" webkitdirectory directory multiple style="display: none;">
-            <div class="import-buttons">
-              <button id="btn-import-files" class="import-btn">Import Files</button>
-              <button id="btn-import-folder" class="import-btn import-folder">Import Folder</button>
-            </div>
-          </div>
-          <div id="media-grid" class="media-grid">
-          </div>
-        </div>
-        <div id="resize-handle" class="resize-handle"></div>
-      </aside>
-      <button id="toggle-panel" class="sidebar-toggle">&lt;</button>
-      <main class="preview-window">
-        <video id="main-player">
-          <source src="" type="video/mp4"> Your browser does not support the video tag.
-        </video>
-        <canvas id="main-canvas" width="1920" height="1080"></canvas>
-        <div class="playback-controls">
-          <button id="btn-start" class="ctrl-btn" title="Start at Beginning" aria-label="Start at beginning">⏮️</button>
-          <button id="btn-rewind" class="ctrl-btn" title="Rewind 5s" aria-label="Rewind five seconds">⏪</button>
-          <button id="btn-play-pause" class="ctrl-btn" title="Play/Pause" aria-label="Play/pause">▶️</button>
-          <button id="btn-fast-forward" class="ctrl-btn" title="Fast Forward 5s" aria-label="Fast forward five seconds">⏩</button>
-          <button id="btn-end" class="ctrl-btn" title="Skip to End" aria-label="Skip to end">⏭️</button>
-          <div class="speed-control-wrapper">
-            <button id="btn-speed" class="ctrl-btn speed-btn" title="Playback Speed">⏱️ 1.00x</button>
-            <div id="speed-modal" class="speed-modal hidden">
-              <div class="speed-header">
-                <span>Playback Speed</span>
-                <input type="text" id="speed-input" class="speed-text-input" value="1.00x">
-              </div>
-              <input type="range" id="speed-slider" min="0.06" max="16" step="0.01" value="1">
-              <div class="speed-labels">
-                <span>0.06x</span> <span>Snap Range</span>
-                <span>16x</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-    <section class="timeline-panel">
-      <div id="timeline-resize-handle" class="timeline-resize-handle" title="Resize Timeline"></div>
-      <div class="timeline-header">
-        <div class="timeline-header-title">
-          <button id="timeline-collapse-toggle" class="timeline-collapse-toggle" title="Collapse Timeline">▾</button>
-          <h3>Timeline</h3>
-        </div>
-        <div class="timeline-tools">
-          <button id="tl-btn-split">Split</button>
-          <button id="tl-btn-delete">Delete</button>
-        </div>
-      </div>
-      <div class="timeline-scroll-container">
-        <div class="timeline-workspace-wrapper">
-          <div class="timeline-ruler" id="timeline-ruler"></div>
-          <div class="timeline-tracks-group" id="timeline-tracks">
-          </div>
-        </div>
-      </div>
-    </section>
-  
-  <template id="track-template">
-    <div class="timeline-track-row" data-track-type="video" data-track-id="">
-      <div class="track-label">Track</div>
-      <div class="track-lane"></div>
-    </div>
-  </template>
 
-  <template id="menu-item-template">
-    <div class="menu-item">Item</div>
-  </template>
+<header class="site-header">
+  <div class="wordmark">
+    <svg viewBox="0 0 24 24" class="bell-icon" aria-hidden="true">
+      <path d="M12 3.5c-3.2 0-5 2.2-5 5.4v2.3c0 1-.4 2-1.1 2.8L4.8 15.3c-.6.7-.1 1.7.8 1.7h12.8c.9 0 1.4-1 .8-1.7l-1.1-1.3c-.7-.8-1.1-1.8-1.1-2.8V8.9c0-3.2-1.8-5.4-5-5.4Z"/>
+      <path d="M9.8 19.2a2.3 2.3 0 0 0 4.4 0"/>
+    </svg>
+    <span>Harmony Middle School</span>
   </div>
-  <div id="context-menu" class="context-menu hidden">
-    <div class="menu-item" id="menu-create-folder">Create Folder</div>
-    <div class="menu-item" id="menu-empty-folder">Empty Contents</div>
-    <div class="menu-item" id="menu-remove-from-folder">Remove from Folder</div>
-    <div class="menu-item" id="menu-rename">Rename</div>
-    <div class="menu-item" id="menu-meta">View Metadata</div>
-    <div class="menu-item" id="menu-add-tag">Add Tag</div>
-    <div class="menu-item hidden" id="menu-remove-tag">Remove Tag</div>
-    <div class="menu-item delete" id="menu-delete">Delete</div>
+  <div class="header-meta">
+    <span class="day-pill" id="header-day-pill">A Day</span>
+    <span class="header-date" id="header-date"></span>
+    <span class="header-clock" id="header-clock"></span>
   </div>
-  <div id="meta-modal" class="meta-modal hidden">
-    <div class="meta-content">
-      <button class="close-btn" id="meta-close" title="Close">&times;</button>
-      <h3>File Metadata</h3>
-      <pre id="meta-text"></pre>
-      <button class="copy-btn" id="meta-copy">Copy to Clipboard</button>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Clock sections">
+  <button class="tab-btn" role="tab" data-tab="clock" id="tab-clock" aria-selected="true" aria-controls="panel-clock">Clock</button>
+  <button class="tab-btn" role="tab" data-tab="schedule" id="tab-schedule" aria-selected="false" aria-controls="panel-schedule">Bell Schedule</button>
+  <button class="tab-btn" role="tab" data-tab="countdowns" id="tab-countdowns" aria-selected="false" aria-controls="panel-countdowns">Countdowns</button>
+</nav>
+
+<main>
+
+  <section id="panel-clock" class="panel" role="tabpanel" aria-labelledby="tab-clock">
+    <div class="hero">
+      <div class="hero-time" id="hero-time">
+        <span id="hero-h">--</span><span class="colon">:</span><span id="hero-m">--</span><span class="colon">:</span><span id="hero-s">--</span>
+        <span class="hero-ampm" id="hero-ampm">--</span>
+      </div>
+      <div class="hero-date" id="hero-date">&nbsp;</div>
+      <div class="hero-year" id="hero-year">&nbsp;</div>
     </div>
-  </div>
-  <div id="tag-modal" class="meta-modal hidden">
-    <div class="meta-content">
-      <button class="close-btn" id="tag-close" title="Close">&times;</button>
-      <h3>Add a Tag</h3>
-      <input type="text" id="tag-input" placeholder="e.g. b-roll, intro, audio" class="modal-input">
-      <button class="copy-btn" id="tag-save">Save Tag</button>
+
+    <div class="status-card" id="status-card">
+      <div class="status-kind">Loading&hellip;</div>
     </div>
-  </div>
-  <div id="device-warning" class="device-warning hidden">
-    <div class="device-warning-content">
-      <h3><img loading="lazy" decoding="async" src="img/caution.png" alt="Warning" class="device-warning-icon"> Performance Notice</h3>
-      <p> This editor is designed for desktop use. For the best performance, please use a PC. </p>
-      <button id="device-warning-btn">I Understand</button>
-      <img loading="lazy" decoding="async" src="img/device-warning-computer.png" alt="Desktop computer" class="device-warning-image">
+  </section>
+
+  <section id="panel-schedule" class="panel" role="tabpanel" aria-labelledby="tab-schedule" hidden>
+    <div class="schedule-toolbar">
+      <div class="day-toggle" role="group" aria-label="Choose which schedule to view">
+        <button class="toggle-btn" id="toggle-a" data-day="A" aria-pressed="false">A Day</button>
+        <button class="toggle-btn" id="toggle-b" data-day="B" aria-pressed="false">B Day</button>
+      </div>
+      <p class="schedule-note" id="schedule-note"></p>
     </div>
-  </div>
-  <script defer src="js/main.js"></script>
-  <script defer src="js/top-menu.js"></script>
-  <script defer src="js/media-library.js"></script>
-  <script defer src="js/preview.js"></script>
-  <script defer src="js/timeline.js"></script>
+    <div class="schedule-list" id="schedule-list"></div>
+  </section>
+
+  <section id="panel-countdowns" class="panel" role="tabpanel" aria-labelledby="tab-countdowns" hidden>
+    <div class="countdown-grid">
+
+      <article class="countdown-card">
+        <svg viewBox="0 0 24 24" class="cd-icon" aria-hidden="true"><path d="M12 3.5c-3.2 0-5 2.2-5 5.4v2.3c0 1-.4 2-1.1 2.8L4.8 15.3c-.6.7-.1 1.7.8 1.7h12.8c.9 0 1.4-1 .8-1.7l-1.1-1.3c-.7-.8-1.1-1.8-1.1-2.8V8.9c0-3.2-1.8-5.4-5-5.4Z"/><path d="M9.8 19.2a2.3 2.3 0 0 0 4.4 0"/></svg>
+        <h3 class="cd-title">Next Bell</h3>
+        <div class="cd-timer" id="cd-bell-timer">00:00:00</div>
+        <p class="cd-subtitle" id="cd-bell-subtitle">&nbsp;</p>
+      </article>
+
+      <article class="countdown-card">
+        <svg viewBox="0 0 24 24" class="cd-icon" aria-hidden="true"><path d="M8 3.5h6a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H8"/><path d="M8 3.5H6A1.5 1.5 0 0 0 4.5 5v14A1.5 1.5 0 0 0 6 20.5h2"/><path d="M14 12h4m-2-2 2 2-2 2"/></svg>
+        <h3 class="cd-title">School Ends</h3>
+        <div class="cd-timer" id="cd-end-timer">00:00:00</div>
+        <p class="cd-subtitle" id="cd-end-subtitle">&nbsp;</p>
+      </article>
+
+      <article class="countdown-card">
+        <svg viewBox="0 0 24 24" class="cd-icon" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8 3.5v3M16 3.5v3"/><path d="m9 14 2 2 4-4"/></svg>
+        <h3 class="cd-title">Next School Day</h3>
+        <div class="cd-timer" id="cd-next-timer">00:00:00</div>
+        <p class="cd-subtitle" id="cd-next-subtitle">&nbsp;</p>
+      </article>
+
+      <article class="countdown-card">
+        <svg viewBox="0 0 24 24" class="cd-icon" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 3.2v2.1M12 18.7v2.1M4.6 12H6.7M17.3 12h2.1M6.3 6.3l1.5 1.5M16.2 16.2l1.5 1.5M6.3 17.7l1.5-1.5M16.2 7.8l1.5-1.5"/></svg>
+        <h3 class="cd-title" id="cd-weekend-title">The Weekend</h3>
+        <div class="cd-timer" id="cd-weekend-timer">00:00:00</div>
+        <p class="cd-subtitle" id="cd-weekend-subtitle">&nbsp;</p>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+
+<div class="tooltip" id="tooltip" role="status"></div>
+
+<script src="script.js" defer></script>
 </body>
-
 </html>
