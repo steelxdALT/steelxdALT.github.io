@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility - First Touch</title>
+<meta name="description" content="Accessibility features and support in First Touch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header is-scrolled">
+  <div class="header-inner">
+    <a class="brand" href="index.html" aria-label="First Touch, home">
+      <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="7"/>
+        <path d="M50 24 L69 38 L61 61 L39 61 L31 38 Z" fill="currentColor"/>
+      </svg>
+      <span class="brand-name">First Touch</span>
+    </a>
+  </div>
+</header>
+<main id="main">
+  <section class="accessibility-page">
+    <div class="section-inner accessibility-page-inner">
+      <p class="section-kicker" data-i18n="accessibilityPage.kicker">Accessibility</p>
+      <h1 data-i18n="accessibilityPage.heading">Accessible by design.</h1>
+      <p data-i18n="accessibilityPage.intro">Some accessibility foundations are implemented, and the remaining work is being tracked here before launch claims are made.</p>
+      <ul class="accessibility-features">
+        <li><strong data-i18n="accessibilityPage.foundations">Implemented foundations</strong><span data-i18n="accessibilityPage.foundationsBody">Skip link, visible focus styles, display controls, reduced-motion handling, and mobile menu focus behavior are present.</span></li>
+        <li><strong data-i18n="accessibilityPage.keyboard">Keyboard-only test</strong><span data-i18n="accessibilityPage.keyboardBody">Verify focus order, dropdown dismissal, dialog focus, and every actionable control without a mouse.</span></li>
+        <li><strong data-i18n="accessibilityPage.zoom">Zoom and large text</strong><span data-i18n="accessibilityPage.zoomBody">Test at browser zoom and with the large-text setting to confirm content remains readable without overlap.</span></li>
+        <li><strong data-i18n="accessibilityPage.screenReaders">Screen readers</strong><span data-i18n="accessibilityPage.screenReadersBody">Test with NVDA and VoiceOver before describing screen-reader support as complete.</span></li>
+        <li><strong data-i18n="accessibilityPage.motion">Motion, contrast, and touch</strong><span data-i18n="accessibilityPage.motionBody">Verify reduced motion, contrast, mobile target sizing, captions, and spoken training instructions as those features are built.</span></li>
+      </ul>
+      <a class="btn btn-primary" href="index.html" data-i18n="actions.backHome">Back to First Touch</a>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="section-inner footer-inner">
+    <p class="footer-copy">First Touch accessibility information</p>
+  </div>
+</footer>
+<script src="translations.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
